@@ -1,12 +1,58 @@
-# React + Vite
+# 🩺 SehatSathi – A Voice-First AI Health Companion for Elderly Bharat
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SehatSathi is a virtual healthcare companion designed to provide accessible and empathetic medical assistance to users. Built with a user-centric approach, it leverages modern technology to offer accurate health advice, symptom analysis, and mental health support—all within an intuitive and friendly interface.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- ✅ **Symptom Checker** – Get AI-based assessments and preliminary suggestions.
+- 🧠 **Mental Health Support** – Chat-based emotional support and self-care tips.
+- 📱 **Responsive UI** – Clean, mobile-friendly interface built with React and Tailwind CSS.
+- 🌐 **Multilingual Support** – Designed with inclusivity in mind for diverse language support.
+- 🔒 **Data Privacy** – User data is handled with confidentiality and care.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** ReactJS, Tailwind CSS
+- **Backend:** Node.js, Express.js
+- **AI Services:** Gemini API / OpenAI API
+- **Authentication:** Firebase / Auth0 *(optional)*
+- **Deployment:** Vercel / Netlify *(for frontend)*, Render / Railway *(for backend)*
+
+---
+
+## 🧠 How It Works
+
+1. User interacts via a chat interface.
+2. Symptoms or concerns are processed by an AI engine (Gemini).
+3. Relevant suggestions, advice, or links to medical professionals are provided.
+
+---
+
+## 💡 Use Cases
+
+- Basic medical triage
+- Mental health check-ins
+- Elderly care support
+- Healthcare access in remote areas
+
+---
+
+## 📸 Screenshots
+
+*(Add screenshots of homepage, chat interface, symptom checker etc.)*
+
+---
+
+## 🏗️ Setup Instructions
+
+```bash
+git clone https://github.com/Kash04ish/SehatSathi.git
+cd SehatSathi
+Run Frontend-
+cd frontend
+npm install
+npm run dev
