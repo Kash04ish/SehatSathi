@@ -1,28 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const Assistant = () => {
   return (
     <div className="font-sans text-gray-800 min-h-screen bg-white">
-      {/* NAVBAR */}
-      <header className="bg-white shadow-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <h1 className="text-xl font-bold text-teal-600">
-            <Link to="/">SehatSathi</Link>
-          </h1>
-          <nav className="hidden md:flex gap-6 text-sm">
-            <Link to="/" className="hover:text-teal-600">Home</Link>
-            <Link to="/assistant" className="text-teal-600 font-semibold">Assistant</Link>
-            <Link to="/scanner" className="hover:text-teal-600">Scanner</Link>
-            <Link to="/dashboard" className="hover:text-teal-600">Dashboard</Link>
-            <Link to="/offline" className="hover:text-teal-600">Offline</Link>
-          </nav>
-          <div className="flex gap-4 text-sm">
-            <Link to="/login" className="text-teal-600 hover:underline">Login</Link>
-            <Link to="/signup" className="bg-teal-600 text-white px-4 py-1 rounded hover:bg-teal-700">Sign Up</Link>
-          </div>
-        </div>
-      </header>
+      {/* Navbar */}
+      <Navbar />
 
       {/* MAIN CONTENT */}
       <main className="max-w-7xl mx-auto p-4 md:flex gap-6">
@@ -60,7 +45,8 @@ const Assistant = () => {
               <img src="https://i.imgur.com/dpAfa6k.png" alt="Assistant" className="w-8 h-8 rounded-full" />
               <div className="bg-white border p-3 rounded-md">
                 <p><strong>Medicine Logged</strong></p>
-                <p className="text-sm text-gray-600">बहुत अच्छी! मैंने अभी दवाई का सेवन लॉग कर दिया है।<br />
+                <p className="text-sm text-gray-600">
+                  बहुत अच्छी! मैंने अभी दवाई का सेवन लॉग कर दिया है।<br />
                   <span className="text-gray-500 italic">Dolo 650 (morning dose) : Confirmed</span>
                 </p>
               </div>
@@ -81,7 +67,7 @@ const Assistant = () => {
             </div>
           </div>
 
-          {/* Input */}
+          {/* Input Section */}
           <div className="flex items-center gap-2 border-t pt-4 mt-6">
             <button className="bg-teal-600 text-white rounded-full w-10 h-10 flex items-center justify-center text-lg">
               🎤
@@ -151,19 +137,7 @@ const Assistant = () => {
       </main>
 
       {/* FOOTER */}
-      <footer className="bg-gray-100 text-center py-8 mt-10">
-        <h4 className="text-xl font-bold">SehatSathi</h4>
-        <p className="text-sm text-gray-600 mt-1 mb-4">Stay Healthy with SehatSathi</p>
-        <div className="flex justify-center items-center gap-2 max-w-sm mx-auto">
-          <input
-            type="email"
-            placeholder="Enter your email"
-            className="border px-4 py-2 rounded w-full"
-          />
-          <button className="bg-teal-600 text-white px-4 py-2 rounded">Subscribe</button>
-        </div>
-        <p className="mt-4 text-xs text-gray-400">© 2025 SehatSathi</p>
-      </footer>
+       <Footer />
     </div>
   );
 };
