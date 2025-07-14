@@ -1,28 +1,8 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 const Assistant = () => {
   return (
     <div className="font-sans text-gray-800 min-h-screen bg-white">
-      {/* NAVBAR */}
-      <header className="bg-white shadow-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <h1 className="text-xl font-bold text-teal-600">
-            <Link to="/">SehatSathi</Link>
-          </h1>
-          <nav className="hidden md:flex gap-6 text-sm">
-            <Link to="/" className="hover:text-teal-600">Home</Link>
-            <Link to="/assistant" className="text-teal-600 font-semibold">Assistant</Link>
-            <Link to="/scanner" className="hover:text-teal-600">Scanner</Link>
-            <Link to="/dashboard" className="hover:text-teal-600">Dashboard</Link>
-            <Link to="/offline" className="hover:text-teal-600">Offline</Link>
-          </nav>
-          <div className="flex gap-4 text-sm">
-            <Link to="/login" className="text-teal-600 hover:underline">Login</Link>
-            <Link to="/signup" className="bg-teal-600 text-white px-4 py-1 rounded hover:bg-teal-700">Sign Up</Link>
-          </div>
-        </div>
-      </header>
 
       {/* MAIN CONTENT */}
       <main className="max-w-7xl mx-auto p-4 md:flex gap-6">
@@ -149,22 +129,8 @@ const Assistant = () => {
           </div>
         </aside>
       </main>
-
-      {/* FOOTER */}
-      <footer className="bg-gray-100 text-center py-8 mt-10">
-        <h4 className="text-xl font-bold">SehatSathi</h4>
-        <p className="text-sm text-gray-600 mt-1 mb-4">Stay Healthy with SehatSathi</p>
-        <div className="flex justify-center items-center gap-2 max-w-sm mx-auto">
-          <input
-            type="email"
-            placeholder="Enter your email"
-            className="border px-4 py-2 rounded w-full"
-          />
-          <button className="bg-teal-600 text-white px-4 py-2 rounded">Subscribe</button>
-        </div>
-        <p className="mt-4 text-xs text-gray-400">© 2025 SehatSathi</p>
-      </footer>
-    </div>
+      
+      </div>
   );
 };
 
