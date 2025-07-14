@@ -1,13 +1,8 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 
 const Assistant = () => {
   return (
     <div className="font-sans text-gray-800 min-h-screen bg-white">
-      {/* Navbar */}
-      <Navbar />
 
       {/* MAIN CONTENT */}
       <main className="max-w-7xl mx-auto p-4 md:flex gap-6">
@@ -135,10 +130,8 @@ const Assistant = () => {
           </div>
         </aside>
       </main>
-
-      {/* FOOTER */}
-       <Footer />
-    </div>
+      
+      </div>
   );
 };
 

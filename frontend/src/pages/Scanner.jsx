@@ -1,14 +1,10 @@
 import { Link } from "react-router-dom";
 import scan from '../assets/medsc.png';
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 
 const Scanner = () => {
   return (
     <div className="font-sans text-gray-800">
-      {/* NAVBAR */}
-      <Navbar />
-
+  
       {/* MAIN SECTION */}
       <main className="max-w-7xl mx-auto p-4 md:flex gap-6">
         {/* LEFT: Upload + Audio Cards */}
@@ -108,8 +104,6 @@ const Scanner = () => {
         </aside>
       </main>
 
-      {/* FOOTER */}
-      <Footer />
     </div>
   );
 };

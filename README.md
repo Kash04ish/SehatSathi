@@ -19,8 +19,8 @@ SehatSathi is a virtual healthcare companion designed to provide accessible and 
 - **Frontend:** ReactJS, Tailwind CSS
 - **Backend:** Node.js, Express.js
 - **AI Services:** Gemini API / OpenAI API
-- **Authentication:** Firebase / Auth0 *(optional)*
-- **Deployment:** Vercel / Netlify *(for frontend)*, Render / Railway *(for backend)*
+- **Authentication:** Clerk
+- **Deployment:** Vercel *(for frontend)*, Render *(for backend)*
 
 ---
 
