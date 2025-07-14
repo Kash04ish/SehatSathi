@@ -51,26 +51,31 @@ const Home = () => {
               title: 'Live Voice Interaction',
               desc: 'Engage in real-time health conversations, get answers, and track your daily wellness effortlessly.',
               img: VoiceImg,
-              btn: 'Explore Voice Assistant'
+              btn: 'Explore Voice Assistant',
+              link: '/assistant'
             },
             {
               title: 'Medicine Scanner',
               desc: 'Simply scan medicine strips to understand dosages, warnings, and potential interactions instantly.',
               img: MedScannerImg,
-              btn: 'Scan Medicines'
+              btn: 'Scan Medicines',
+              link: '/scanner'
             },
             {
               title: 'Family Health Dashboard',
               desc: 'Monitor your family health logs, medication schedules, and receive AI-generated insights.',
               img: DashboardImg,
-              btn: 'View Dashboard'
+              btn: 'View Dashboard',
+              link: '/dashboard'
             }
           ].map((feature, i) => (
             <div key={i} className="border p-6 rounded-lg text-left">
               <h4 className="text-xl font-semibold">{feature.title}</h4>
               <p className="text-sm text-gray-600 mt-2">{feature.desc}</p>
               <img src={feature.img} alt={feature.title} className="my-4 rounded-md w-full" />
-              <button className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">{feature.btn}</button>
+              <Link to={feature.link}>
+                <button className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">{feature.btn}</button>
+              </Link>
             </div>
           ))}
         </div>

@@ -12,7 +12,7 @@ const Assistant = () => {
 
           {/* Chat messages */}
           <div className="space-y-4">
-            {/* Assistant */}
+            {/* Assistant Message */}
             <div className="flex items-start gap-2">
               <img src="https://i.imgur.com/dpAfa6k.png" alt="Assistant" className="w-8 h-8 rounded-full" />
               <div className="bg-gray-100 p-3 rounded-md">
