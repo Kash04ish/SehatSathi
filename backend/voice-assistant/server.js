@@ -1,17 +1,44 @@
-import 'dotenv/config';
-console.log("GEMINI_API_KEY is:", process.env.GEMINI_API_KEY);
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+
+dotenv.config();
+
+
 import express from 'express';
 import { createServer } from 'http';
 import { WebSocketServer } from 'ws';
+// import prescriptionRoutes from './routes/prescription.js';
 
 import { initSTT } from './stt.js';
 import { chat }    from './chat.js';
 import { tts }     from './tts.js';
 
+// ─── NEW: load our prescription/reminder feature ───────────────────────────────
+import prescriptionRoutes from './routes/prescription.js';
+import reminderRoutes     from './routes/reminder.js';
+import startReminderCron  from './scheduler/reminderCron.js';
+// ───────────────────────────────────────────────────────────────────────────────
+
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser:    true,
+  useUnifiedTopology: true
+})
+  .then(() => console.log('✅ MongoDB connected'))
+  .catch(err => {
+    console.error('❌ MongoDB connection error', err);
+    process.exit(1);
+  });
+
 const app  = express();
 const port = process.env.PORT || 8080;
 
 app.use(express.json({ limit: '2mb' }));
+
+// ─── MOUNT prescription & reminder routes ─────────────────────────────────────
+app.use('/api/prescription', prescriptionRoutes);
+app.use('/api/reminders',    reminderRoutes);
+
+// ───────────────────────────────────────────────────────────────────────────────
 
 app.post('/chat', async (req, res) => {
   const answer = await chat(req.body.text || '');
@@ -28,6 +55,8 @@ const wss = new WebSocketServer({ server: httpServer, path: '/ws/stt' });
 
 initSTT(wss);
 
-httpServer.listen(port, () =>
-  console.log(`Voice backend running at http://localhost:${port}`)
-);
+httpServer.listen(port, () => {
+  console.log(`Voice backend running at http://localhost:${port}`);
+  // start the background job that flips due reminders to “sent”
+  startReminderCron();
+});
