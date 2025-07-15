@@ -1,56 +1,53 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-const Sidebar = () => {
+const links = [
+  { label: "Family Logs", target: "family-dashboard" },
+  { label: "AI Health Updates", target: "ai-health-updates" },
+  { label: "Daily Info", target: "daily-info" },
+  { label: "Elder Support", target: "elder-support" },
+];
+
+export default function Sidebar() {
+  const [activeSection, setActiveSection] = useState("");
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-30% 0px -70% 0px" } // Top-focused detection
+    );
+
+    links.forEach(({ target }) => {
+      const section = document.getElementById(target);
+      if (section) observer.observe(section);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="w-64 h-screen fixed left-0 top-16 bg-white shadow-md p-4">
-      <nav className="flex flex-col gap-4">
-        <NavLink
-          to="/dashboard/family-logs"
-          className={({ isActive }) =>
-            `flex items-center gap-2 px-3 py-2 rounded ${
-              isActive ? "bg-teal-600 text-white" : "text-gray-700 hover:bg-gray-100"
-            }`
-          }
-        >
-          Family Logs
-        </NavLink>
-
-        <NavLink
-          to="/dashboard/ai-health-update"
-          className={({ isActive }) =>
-            `flex items-center gap-2 px-3 py-2 rounded ${
-              isActive ? "bg-teal-600 text-white" : "text-gray-700 hover:bg-gray-100"
-            }`
-          }
-        >
-          AI Health Updates
-        </NavLink>
-
-        <NavLink
-          to="/dashboard/daily-info"
-          className={({ isActive }) =>
-            `flex items-center gap-2 px-3 py-2 rounded ${
-              isActive ? "bg-teal-600 text-white" : "text-gray-700 hover:bg-gray-100"
-            }`
-          }
-        >
-          Daily Info
-        </NavLink>
-
-        <NavLink
-          to="/dashboard/elder-support"
-          className={({ isActive }) =>
-            `flex items-center gap-2 px-3 py-2 rounded ${
-              isActive ? "bg-teal-600 text-white" : "text-gray-700 hover:bg-gray-100"
-            }`
-          }
-        >
-          Elder Support
-        </NavLink>
+    <aside className="w-60 bg-white text-gray-800 h-screen p-6 sticky top-0 border-r border-gray-200">
+      <div className="text-xl font-bold mb-10">SehatSathi</div>
+      <nav className="flex flex-col gap-5 text-base">
+        {links.map(({ label, target }) => (
+          <a
+            key={target}
+            href={`#${target}`}
+            className={`transition-colors duration-200 ${
+              activeSection === target
+                ? "text-teal-600 font-semibold"
+                : "text-gray-700 hover:text-teal-500"
+            }`}
+          >
+            {label}
+          </a>
+        ))}
       </nav>
-    </div>
+    </aside>
   );
-};
-
-export default Sidebar;
+}
