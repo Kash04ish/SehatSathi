@@ -1,0 +1,19 @@
+import mongoose from 'mongoose';
+
+const MedicineSchema = new mongoose.Schema({
+  name:        String,
+  dosage:      String,
+  times:       [String],  // ["08:00","14:00"] or ["3x a day"]
+  startDate:   String,    // keep original text
+  endDate:     String,
+  instructions:String
+}, { _id:false });
+
+const PrescriptionSchema = new mongoose.Schema({
+  userId:      { type: mongoose.Types.ObjectId, ref: 'User', required: true },
+  medicines:   [MedicineSchema],
+  // for traceability
+  extractedAt: { type: Date, default: Date.now }
+});
+
+export default mongoose.model('Prescription', PrescriptionSchema);

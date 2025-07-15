@@ -23,6 +23,8 @@ dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 dotenv.config();
 console.log("Loaded OpenAI key:", process.env.OPENAI_API_KEY?.slice(0, 10)); 
 import OpenAI from 'openai';
+import dotenv from 'dotenv';
+dotenv.config();
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export async function chat(userText = '') {
