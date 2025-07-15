@@ -1,0 +1,132 @@
+{
+  "hero": {
+    "title": "Your Health, Our Voice, Always with You.",
+    "subtitle": "SehatSathi provides intuitive voice-activated health assistance, bringing care closer to home.",
+    "talkButton": "Talk to SehatSathi AI Assistant",
+    "offlineButton": "Try Offline Mode"
+  },
+
+  "features": {
+    "title": "Seamless Health Management, Tailored For You",
+    "feature1": {
+      "title": "Live Voice Interaction",
+      "desc": "Engage in real-time health conversations, get answers, and track your daily wellness effortlessly.",
+      "btn": "Explore Voice Assistant"
+    },
+    "feature2": {
+      "title": "Medicine Scanner",
+      "desc": "Simply scan medicine strips to understand dosages, warnings, and potential interactions instantly.",
+      "btn": "Scan Medicines"
+    },
+    "feature3": {
+      "title": "Family Health Dashboard",
+      "desc": "Monitor your family health logs, medication schedules, and receive AI-generated insights.",
+      "btn": "View Dashboard"
+    }
+  },
+
+  "demo": {
+    "title": "See SehatSathi in Action",
+    "desc": "Watch how our AI assistant simplifies health management with easy, voice-based interactions."
+  },
+
+  "language": {
+    "chooseLang": "Choose Your Language",
+    "desc": "SehatSathi is committed to serving you in your preferred language. This allows our assistant to communicate clearly and understand regional health concerns.",
+    "why": {
+      "title": "Why Language Matters",
+      "point1": "Clearer understanding of health guidance",
+      "point2": "Faster response and less confusion",
+      "point3": "Comfort for elders unfamiliar with English"
+    }
+  },
+
+  "upcomingFeature": {
+    "title": "Upcoming Feature: Choose Your Saathi’s Voice",
+    "desc": "Coming soon: A voice that sounds like family — so your health companion truly feels like your own."
+  },
+
+  "poweredBy": "Powered By HeyGen",
+
+  "testimonials": {
+    "title": "What Our Users Say",
+    "t1": {
+      "quote": "SehatSathi has transformed how my family monitors my health. The voice assistant is incredibly easy to use for elders.",
+      "name": "Sarla Devi, Delhi"
+    },
+    "t2": {
+      "quote": "The medicine scanner is a lifesaver! I can quickly check details and warnings without any hassle.",
+      "name": "Rajesh Kumar, Mumbai"
+    },
+    "t3": {
+      "quote": "Offline mode is brilliant. Even without internet, I can access crucial health information and support.",
+      "name": "Ananya Sharma, Bengaluru"
+    }
+  },
+
+  "partners": "Our Valued Partners",
+
+  "scanner": {
+    "uploadTitle": "Upload Medicine Strip",
+    "uploadSubtitle": "Capture or upload an image of your medicine for details.",
+    "uploadPlaceholder": "Upload/Drag & Drop image here",
+    "scanButton": "Scan Medicine →",
+    "voiceCardTitle": "Aapka Apna Baton Wala Doctor",
+    "voiceCardSubtitle": "Scan Medicine",
+    "voiceCardText": "Yē Altrocin, oi Waite pill 😐\nDuuk water 2 h",
+    "motivationTitle": "Aap Akele Nahi Hain",
+    "motivationQuote": "Don't worry! Right time, right medicine.",
+    "playVoice": "Play Voice",
+    "scannedDetails": "Scanned Details & Explanation",
+    "ocrText": "Upload a medicine strip image to get started.",
+    "aiExplain": "The AI will provide a voice-based explanation and warnings here.",
+    "playExplanation": "Play Voice Explanation",
+    "dietaryIntake": "Dietary Intake & Precautions",
+    "dietaryExample": "User: \"Aam aur dahi khaya.\" Medicine: Levofloxacin → Wait 1 hour after curd.",
+    "dietaryVoice": "The AI will provide a voice-based explanation here.",
+    "historyTitle": "Recent Scans & Health Tips",
+    "amoxInfo": "Antibiotic. Take with food to prevent stomach upset. Finish the full course.",
+    "multiInfo": "Supports overall health and immunity. Best taken in the morning.",
+    "digeneInfo": "Antacid. For indigestion and heartburn relief. Shake well before use.",
+    "viewAll": "View All Scans"
+  },
+
+  "offline": {
+    "headerTitle": "Offline Mode Active",
+    "headerDesc": "Access essential SehatSathi features even without internet, powered by TinyML.",
+
+    "assistantTitle": "Offline AI Assistant",
+    "sampleQuestion": "How can I manage a sore throat today?",
+    "sampleAnswer": "Try gargling with warm salt water. Ginger tea can help soothe discomfort. If it persists, consult a doctor.",
+    "inputPlaceholder": "Ask something...",
+    "emotionDetected": "Emotion Detected:",
+    "emotionValue": "Positive",
+
+    "smsTitle": "Emergency SMS Trigger",
+    "smsDesc": "Send alerts to your trusted contacts instantly.",
+    "smsButton": "Trigger Emergency SMS",
+    "smsSuccess": "✅ Emergency SMS sent!",
+    "smsFail": "❌ Failed to send Emergency SMS.",
+
+    "contacts": {
+      "contact1": "Son, Raj Patel: +91 98765 43210",
+      "contact2": "Daughter, Priya Sharma: +91 98887 76655",
+      "contact3": "Family Doctor, Dr. Gupta: +91 90000 11111"
+    },
+
+    "resourcesTitle": "Offline Health Resources",
+    "resourcesList": [
+      "Managing Mild Fever",
+      "Cough and Cold Remedies",
+      "Basic First Aid for Cuts",
+      "Recognizing Dehydration",
+      "Stress Relief Techniques",
+      "Digestive Upset Advice"
+    ],
+    "resourceDesc": "Respective tips and details here...",
+
+    "pwaTitle": "Install SehatSathi PWA",
+    "pwaDesc": "Install the app for full offline access and enhanced performance.",
+    "pwaButton": "Learn More"
+  }
+}
