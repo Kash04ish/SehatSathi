@@ -8,6 +8,7 @@ import express from 'express';
 import { createServer } from 'http';
 import { WebSocketServer } from 'ws';
 // import prescriptionRoutes from './routes/prescription.js';
+import medicineInfoRoutes from './routes/medicineInfo.js';
 
 import { initSTT } from './stt.js';
 import { chat }    from './chat.js';
@@ -37,7 +38,7 @@ app.use(express.json({ limit: '2mb' }));
 // ─── MOUNT prescription & reminder routes ─────────────────────────────────────
 app.use('/api/prescription', prescriptionRoutes);
 app.use('/api/reminders',    reminderRoutes);
-
+app.use('/api/med-info', medicineInfoRoutes);
 // ───────────────────────────────────────────────────────────────────────────────
 
 app.post('/chat', async (req, res) => {
