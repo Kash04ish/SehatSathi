@@ -7,8 +7,8 @@ import mongoose from 'mongoose';
 const schema = new mongoose.Schema(
   {
     userId: {
-      type: mongoose.Types.ObjectId,
-      ref: 'User',
+      type: String,
+      // ref: 'User',
       required: true,
     },
 

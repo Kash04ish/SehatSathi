@@ -47,7 +47,7 @@ const homeActivities = [
 const ElderSupport = () => {
   return (
     <div className="px-6 pt-6">
-      <div className="bg-teal-50 border-l-4 border-teal-400 p-4 rounded-xl shadow">
+      <div className="bg-teal-50 border-l-4 border-teal-400 p-4 mb-8 rounded-xl shadow">
         <p className="text-lg font-semibold text-teal-700">🌻 You are loved, valued, and never alone.</p>
         <p className="text-sm text-teal-600 mt-1">Your family is connected, and SehatSathi is here with gentle care.</p>
       </div>

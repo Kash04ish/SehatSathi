@@ -75,6 +75,23 @@ router.post('/analyze', upload.single('file'), async (req, res) => {
 });
 
 /* -------------------------------------------------------------------------- */
+/*  GET /api/med-info/recent – return latest scanned medicines                */
+/* -------------------------------------------------------------------------- */
+router.get('/recent', async (req, res) => {
+  try {
+    const meds = await MedicineInfo.find()
+      .sort({ extractedAt: -1 })
+      .limit(5)
+      .select("_id extractedAt");
+
+    res.json({ meds });
+  } catch (err) {
+    console.error("❌ Failed to fetch recent scans:", err);
+    res.status(500).json({ error: "fetch-recent-failed", message: err.message });
+  }
+});
+
+/* -------------------------------------------------------------------------- */
 /*  GET /api/med-info/:id – return EXACT JSON the AI produced                 */
 /* -------------------------------------------------------------------------- */
 router.get('/:id', async (req, res) => {
@@ -89,5 +106,6 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ error: 'fetch-failed', message: err.message });
   }
 });
+
 
 export default router;
