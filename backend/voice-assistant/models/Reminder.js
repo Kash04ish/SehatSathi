@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const ReminderSchema = new mongoose.Schema({
-  userId:       { type: mongoose.Types.ObjectId, ref: 'User', required: true },
+  userId:       { type: String, required: true },
   prescription: { type: mongoose.Types.ObjectId, ref: 'Prescription' },
   medName:      String,
   due:          Date,

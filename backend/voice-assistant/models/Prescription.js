@@ -10,7 +10,11 @@ const MedicineSchema = new mongoose.Schema({
 }, { _id:false });
 
 const PrescriptionSchema = new mongoose.Schema({
-  userId:      { type: mongoose.Types.ObjectId, ref: 'User', required: true },
+  userId:  { 
+    type: String, 
+    // ref: 'User', 
+    required: true 
+  },
   medicines:   [MedicineSchema],
   // for traceability
   extractedAt: { type: Date, default: Date.now }

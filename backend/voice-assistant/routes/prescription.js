@@ -53,16 +53,33 @@ async function handleAnalyze(req, res) {
     });
 
     // Build individual reminders
+    // let bulk = [];
+    // json.reminders.forEach(med => {
+    //   const start = med.startDate && dayjs(med.startDate).isValid()
+    //     ? new Date(med.startDate)
+    //     : new Date();
+    //   const end = resolveEnd(start, med.endDate);
+    //   bulk = bulk.concat(buildReminderDocs({ med, start, end, userId, prescriptionId: prescription._id }));
+    // });
     let bulk = [];
-    json.reminders.forEach(med => {
-      const start = med.startDate && dayjs(med.startDate).isValid()
-        ? new Date(med.startDate)
-        : new Date();
-      const end = resolveEnd(start, med.endDate);
-      bulk = bulk.concat(buildReminderDocs({ med, start, end, userId, prescriptionId: prescription._id }));
-    });
+
+json.reminders.forEach((med) => {
+  const start = med.startDate && dayjs(med.startDate).isValid()
+    ? new Date(med.startDate)
+    : new Date();
+
+  const end = resolveEnd(start, med.endDate);
+
+  const generated = buildReminderDocs({ med, start, end, userId, prescriptionId: prescription._id });
+
+  // ✅ Filter out invalid reminder dates
+  const safe = generated.filter((r) => !isNaN(r.due?.valueOf()));
+
+  bulk = bulk.concat(safe);
+});
 
     await Reminder.insertMany(bulk);
+    console.log("📦 Reminder payload:", JSON.stringify(bulk, null, 2));
 
     res.json({ inserted: bulk.length, prescriptionId: prescription._id });
 
