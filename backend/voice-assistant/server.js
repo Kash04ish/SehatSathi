@@ -67,7 +67,7 @@
 
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import cors from 'cors'; // ✅ Add this line
+import cors from 'cors'; 
 import express from 'express';
 import { createServer } from 'http';
 import { WebSocketServer } from 'ws';
@@ -98,7 +98,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:5173', // 👈 Your frontend URL
+  origin: 'http://localhost:5173',
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type']
 }));
@@ -107,7 +107,7 @@ app.use(express.json({ limit: '2mb' }));
 
 const port = process.env.PORT || 8080;
 
-app.use(cors()); // ✅ Allow frontend access (CORS middleware)
+app.use(cors()); 
 app.use(express.json({ limit: '2mb' }));
 
 // ─── API ROUTES ───────────────────────────────────────────────────
@@ -134,5 +134,5 @@ initSTT(wss);
 // ─── START SERVER ─────────────────────────────────────────────────
 httpServer.listen(port, () => {
   console.log(`Voice backend running at http://localhost:${port}`);
-  startReminderCron(); // ⏰ Launch reminder scheduler
+  startReminderCron(); 
 });

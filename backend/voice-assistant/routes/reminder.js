@@ -44,18 +44,18 @@ router.post('/:id/ack', async (req, res) => {
 // GET /api/reminders/all?userId=…
 // ✅ GET all reminders for a user
 
-app.get("/api/reminders/all", async (req, res) => {
-  const { userId } = req.query;
-  try {
-    const reminders = await Reminder.find({ userId, due: { $gte: new Date() } })
-      .sort({ due: 1 });
-    console.log("📦 Reminder payload:", reminders);
-    res.json({ reminders });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server error");
-  }
-});
+// app.get("/api/reminders/all", async (req, res) => {
+//   const { userId } = req.query;
+//   try {
+//     const reminders = await Reminder.find({ userId, due: { $gte: new Date() } })
+//       .sort({ due: 1 });
+//     console.log("📦 Reminder payload:", reminders);
+//     res.json({ reminders });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).send("Server error");
+//   }
+// });
 
 router.get("/all", async (req, res) => {
   const { userId } = req.query;
