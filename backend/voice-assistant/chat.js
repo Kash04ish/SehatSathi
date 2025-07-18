@@ -1,15 +1,39 @@
-import OpenAI from 'openai';
+// chat.js – bilingual (Hindi / English)
+// -----------------------------------------------------------------------------
 import dotenv from 'dotenv';
+import OpenAI from 'openai';
+
 dotenv.config();
+
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
+/**
+ * Very lightweight language detector: checks for any Devanagari code points.
+ * Returns 'hi' for Hindi, 'en' otherwise.
+ */
+function detectLang(str = '') {
+  return /[\u0900-\u097F]/.test(str) ? 'hi' : 'en';
+}
+
+/**
+ * Send user text to OpenAI Chat Completion and return assistant answer
+ * in the same language (Hindi or English).
+ */
 export async function chat(userText = '') {
-  const { choices } = await openai.chat.completions.create({
+  const lang = detectLang(userText);
+
+  const systemPrompt =
+    lang === 'hi'
+      ? 'आप एक संक्षिप्त, सहायक वॉयस असिस्टेंट हैं। अपने सभी उत्तर **हिंदी** में दीजिए। यदि उपयोगकर्ता भाषा बदलता है तो उसका अनुसरण कीजिये।'
+      : 'You are a concise, helpful voice assistant. If the user switches language, follow the user.';
+
+  const completion = await openai.chat.completions.create({
     model: 'gpt-4o-mini',
     messages: [
-      { role: 'system', content: 'You are a concise, helpful voice assistant.' },
+      { role: 'system', content: systemPrompt },
       { role: 'user',   content: userText }
     ]
   });
-  return choices[0].message.content.trim();
+
+  return completion.choices[0].message.content.trim();
 }
