@@ -1,22 +1,35 @@
 import { FaWifi, FaSms, FaDownload } from 'react-icons/fa';
 
 const Offline = () => {
-  const sendEmergencySMS = async () => {
-    try {
-      await fetch('http://localhost:4000/api/send-sms', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          to: '+919876543210',
-          body: '🚨 Emergency Alert from SehatSathi!',
-        }),
-      });
-      alert('✅ Emergency SMS sent!');
-    } catch (err) {
-      console.error(err);
-      alert('❌ Failed to send Emergency SMS.');
-    }
-  };
+  const sendEmergencySMS = () => {
+  const phoneNumber = "+919876543210";
+  const message = "🚨 Emergency Alert from SehatSathi! Please respond ASAP.";
+  const smsLink = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
+
+  window.location.href = smsLink;
+// const sendEmergencySMS = async () => {
+  // const phoneNumber = "+919876543210";
+  // const message = "🚨 Emergency Alert from SehatSathi!";
+
+  // try {
+  //   await fetch('http://localhost:4000/api/send-sms', {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({
+  //       to: phoneNumber,
+  //       body: message,
+  //     }),
+  //   });
+
+  //   const smsLink = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
+  //   window.location.href = smsLink;
+
+  //   alert('✅ Emergency SMS triggered!');
+  // } catch (err) {
+  //   console.error("❌ SMS Trigger Error:", err);
+  //   alert('❌ Failed to send Emergency SMS.');
+  // }
+};
 
   return (
     <div className="min-h-screen flex flex-col font-sans text-gray-800">
@@ -57,7 +70,7 @@ const Offline = () => {
           <p className="text-gray-600 text-sm">Send alerts to your trusted contacts instantly.</p>
           <button
             onClick={sendEmergencySMS}
-            className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded"
+            className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded transition cursor-pointer"
           >
             <FaSms /> Trigger Emergency SMS
           </button>

@@ -1,7 +1,12 @@
+import { useNavigate } from "react-router-dom";
 
 const DailyInfo = () => {
+  const navigate = useNavigate();
+  const handleGoToScanner = () => {
+    navigate("/scanner"); 
+  };
   return (
-    <div className=" bg-gray-50 p-6 pt-6 pb-10">
+    <div id="daily-info" className=" bg-gray-50 p-6 pt-6 pb-10">
       {/* <h1 className="text-3xl font-semibold text-center text-gray-800 mb-10">
         Daily Info
       </h1> */}
@@ -35,9 +40,13 @@ const DailyInfo = () => {
               placeholder="Search medicine..."
               className="w-full border rounded px-3 py-2 text-sm focus:outline-teal-500"
             />
-            <button className="w-full border rounded px-3 py-2 text-sm flex items-center justify-center gap-2 bg-gray-50 hover:bg-gray-100 transition">
-              <span>📷</span> Scan Medicine
+            <button
+              onClick={handleGoToScanner}
+              className="w-full border rounded px-3 py-2 text-sm flex items-center justify-center gap-2 bg-gray-50 hover:bg-gray-100 transition cursor-pointer"
+            >
+              <span>📷 Scan Medicine</span> 
             </button>
+
           </div>
         </div>
 

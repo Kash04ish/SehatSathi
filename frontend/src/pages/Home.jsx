@@ -8,8 +8,12 @@ import p2 from '../assets/p2.png';
 import p3 from '../assets/p3.png';
 import p4 from '../assets/p4.png';
 import p5 from '../assets/p5.png';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="font-sans text-gray-800">
       {/* HERO */}
@@ -31,14 +35,31 @@ const Home = () => {
         <p className="mt-3 text-gray-600  text-xl max-w-2xl mx-auto pb-10">
           SehatSathi provides intuitive voice-activated health assistance, bringing care closer to home.
         </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-4">
-          <button className="bg-teal-600 text-white px-6 py-2 rounded hover:bg-teal-700">
+        <div className="relative z-10 mt-6 flex flex-wrap justify-center gap-4">
+        <Link to="/assistant">
+          <button className="bg-teal-600 text-white px-6 py-2 rounded hover:bg-teal-700 transition cursor-pointer">
             Talk to SehatSathi AI Assistant
           </button>
-          <button className="border border-teal-600 text-teal-600 px-6 py-2 rounded hover:bg-teal-100">
+        </Link>
+
+        <Link to="/offline">
+          <button
+            onClick={() => console.log("Navigate to Offline")}
+            className="border border-teal-600 text-teal-600 px-6 py-2 rounded hover:bg-teal-100 transition cursor-pointer"
+          >
             Try Offline Mode
           </button>
-        </div>
+        </Link>
+      </div>
+
+        {/* <div className="mt-6 flex flex-wrap justify-center gap-4">
+          <button onClick={goToAssistant} className="bg-teal-600 text-white px-6 py-2 rounded hover:bg-teal-700 transition cursor-pointer">
+            Talk to SehatSathi AI Assistant
+          </button>
+          <button onClick={goToOffline} className="border border-teal-600 text-teal-600 px-6 py-2 rounded hover:bg-teal-100 transition cursor-pointer">
+            Try Offline Mode
+          </button>
+        </div> */}
         
       </section>
 
@@ -61,7 +82,7 @@ const Home = () => {
             },
             {
               title: 'Family Health Dashboard',
-              desc: 'Monitor your family health logs, medication schedules, and receive AI-generated insights.',
+              desc: 'Monitor your loved ones health logs, medication routines, and receive smart insights powered by AI.',
               img: DashboardImg,
               btn: 'View Dashboard'
             }
@@ -70,7 +91,15 @@ const Home = () => {
               <h4 className="text-xl font-semibold">{feature.title}</h4>
               <p className="text-sm text-gray-600 mt-2">{feature.desc}</p>
               <img src={feature.img} alt={feature.title} className="my-4 rounded-md w-full" />
-              <button className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">{feature.btn}</button>
+              <button
+                onClick={() => {
+                  if (feature.btn.includes("Voice")) navigate("/assistant");
+                  else if (feature.btn.includes("Scan")) navigate("/scanner");
+                  else if (feature.btn.includes("Dashboard")) navigate("/dashboard");
+                }}
+                className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300 transition cursor-pointer"
+              >{feature.btn}
+              </button>
             </div>
           ))}
         </div>
@@ -122,7 +151,7 @@ const Home = () => {
         <p className="text-gray-500 mt-2">
           Coming soon: A voice that sounds like family — so your health companion truly feels like your own.
         </p>
-        <p className="text-sm text-gray-800 mt-2">
+        <p className="text-sm font-bold text-gray-800 mt-2">
           Powered By HeyGen
         </p>
       </section>

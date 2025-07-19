@@ -115,14 +115,33 @@ app.use('/api/prescription', prescriptionRoutes);
 app.use('/api/reminders', reminderRoutes);
 app.use('/api/med-info', medicineInfoRoutes);
 
+// app.post('/chat', async (req, res) => {
+//   const answer = await chat(req.body.text || '');
+//   res.json({ answer, lang });
+// });
 app.post('/chat', async (req, res) => {
-  const answer = await chat(req.body.text || '');
-  res.json({ answer });
+  try {
+    const { answer, lang } = await chat(req.body.text || '');
+    res.json({ answer, lang }); // includes language
+  } catch (err) {
+    console.error("❌ Chat handler failed:", err);
+    res.status(500).json({ error: 'chat-error' });
+  }
 });
 
+// app.post('/tts', async (req, res) => {
+//   const mp3 = await tts(req.body.text);
+//   res.set('Content-Type', 'audio/mpeg').send(mp3);
+// });
 app.post('/tts', async (req, res) => {
-  const mp3 = await tts(req.body.text);
-  res.set('Content-Type', 'audio/mpeg').send(mp3);
+  try {
+    const { text, lang } = req.body;
+    const mp3 = await tts(text, lang); // uses override
+    res.set('Content-Type', 'audio/mpeg').send(mp3);
+  } catch (err) {
+    console.error("❌ TTS failed:", err);
+    res.status(500).send("TTS error");
+  }
 });
 
 // ─── WEBSOCKET SERVER ─────────────────────────────────────────────

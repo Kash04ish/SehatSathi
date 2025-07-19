@@ -5,6 +5,10 @@ import scannerGuideImage from "../assets/scanner-guide.png";
 import guide2 from "../assets/guide2.png";
 
 const Scanner = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const [medicineFile, setMedicineFile] = useState(null);
   const [prescriptionFile, setPrescriptionFile] = useState(null);
   const [ocrResult, setOcrResult] = useState("");

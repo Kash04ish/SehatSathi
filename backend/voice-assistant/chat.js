@@ -73,8 +73,15 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
  * Very lightweight language detector: checks for any Devanagari code points.
  * Returns 'hi' for Hindi, 'en' otherwise.
  */
+// function detectLang(str = '') {
+//   return /[\u0900-\u097F]/.test(str) ? 'hi' : 'en';
+// }
 function detectLang(str = '') {
-  return /[\u0900-\u097F]/.test(str) ? 'hi' : 'en';
+  const hindi = (str.match(/[\u0900-\u097F]/g) || []).length;
+  const english = (str.match(/[a-zA-Z]/g) || []).length;
+
+  if (hindi === 0 && english === 0) return 'unknown';
+  return hindi > english ? 'hi' : 'en';
 }
 
 /**
@@ -84,20 +91,31 @@ function detectLang(str = '') {
 export async function chat(userText = '') {
   const lang = detectLang(userText);
 
+  // const systemPrompt = lang === 'hi'
+  //   ? 'आप एक संक्षिप्त, सहायक वॉयस असिस्टेंट हैं। अपने सभी उत्तर **हिंदी** में दीजिए। यदि उपयोगकर्ता भाषा बदलता है तो उसका अनुसरण कीजिये।'
+  //   : 'You are a concise, helpful voice assistant. If the user switches language, follow the user.';
   const systemPrompt = lang === 'hi'
-    ? 'आप एक संक्षिप्त, सहायक वॉयस असिस्टेंट हैं। अपने सभी उत्तर **हिंदी** में दीजिए। यदि उपयोगकर्ता भाषा बदलता है तो उसका अनुसरण कीजिये।'
-    : 'You are a concise, helpful voice assistant. If the user switches language, follow the user.';
+  ? `आप एक सहायक वॉयस असिस्टेंट हैं। कृपया सभी उत्तर **सरल और शुद्ध हिंदी** में दीजिए। उपयोगकर्ता की भाषा बदलने पर उसी भाषा में उत्तर दें।`
+  : `You are a helpful voice assistant. Reply clearly in the same language the user uses.`;
+
+
+console.log("🧠 Language detected:", lang);
+console.log("📝 User input:", userText);
+console.log("📤 System prompt being used:", systemPrompt);
+
 
   try {
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [
         { role: 'system', content: systemPrompt },
-        { role: 'user', content: userText }
+        { role: 'user', content: "[lang=hi] " + userText }
       ]
     });
 
-    return completion.choices[0].message.content.trim();
+    // return completion.choices[0].message.content.trim();
+    return { answer: completion.choices[0].message.content.trim(), lang };
+
   } catch (err) {
     console.error("❌ OpenAI chat failed:", err);
     return "⚠️ I'm having trouble responding right now.";

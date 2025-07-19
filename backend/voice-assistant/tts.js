@@ -1,5 +1,4 @@
 // tts.js – bilingual Text-to-Speech helper
-// -----------------------------------------------------------------------------
 import 'dotenv/config';
 import OpenAI from 'openai';
 

@@ -98,9 +98,11 @@ const ElderSupport = () => {
       <div className="bg-blue-50 border border-blue-300 p-4 rounded-xl mt-10 shadow text-center">
         <h3 className="font-semibold text-blue-800 mb-2">Feeling Lonely?</h3>
         <p className="text-sm text-blue-600 mb-3">Talk to a family member, connect with a volunteer, or just share your thoughts.</p>
-        <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+      <a href="tel:+919876543210">
+        <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition cursor-pointer">
           📞 Call Someone Now
         </button>
+      </a>
       </div>
 
       <div className="bg-gray-100 p-4 rounded-xl mt-10 shadow">

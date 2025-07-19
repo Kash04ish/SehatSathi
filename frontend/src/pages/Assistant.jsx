@@ -156,12 +156,18 @@
 // };
 
 // export default Assistant;
+import Sanscript from 'sanscript';
 import { useState, useRef, useEffect } from "react";
 import { FiMic, FiSend, FiUser, FiAlertCircle } from "react-icons/fi";
-import { BsCapsule, BsPhone, BsPlusCircle } from "react-icons/bs";
+import { BsCapsule, BsPhone, BsFlower1, BsPlusCircle } from "react-icons/bs";
 import { FaRegClock, FaBed, FaUtensils } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Assistant = () => {
+  const navigate = useNavigate();
+  const handleGoToDailyInfo = () => {
+    navigate("/dashboard#daily-info"); 
+  };
   const [messages, setMessages] = useState([
     { from: "bot", text: "Namaste! SehatSathi here. How can I help you manage your health today?" }
   ]);
@@ -176,6 +182,8 @@ const Assistant = () => {
 
   useEffect(() => () => stopRecording(), []);
 
+  const [sttLang, setSttLang] = useState('en'); // 'en' or 'hi'
+  
   const startRecording = async () => {
     const audioContext = new AudioContext({ sampleRate: 16000 });
     await audioContext.audioWorklet.addModule("/worklets/pcm-processor.js");
@@ -188,6 +196,8 @@ const Assistant = () => {
     ws.binaryType = "arraybuffer";
 
     ws.onopen = () => {
+      ws.send(JSON.stringify({ lang: sttLang }));
+
       worklet.port.onmessage = (e) => {
         if (ws.readyState === WebSocket.OPEN) ws.send(e.data);
       };
@@ -199,20 +209,38 @@ const Assistant = () => {
       setIsRecording(true);
     };
 
-    ws.onmessage = (event) => {
-      if (typeof event.data !== "string") return;
-      try {
-        const { text, final } = JSON.parse(event.data);
-        if (!final) setPartial(text);
-        else {
-          setPartial("");
-          stopRecording();
-          sendToChat(text);
-        }
-      } catch (err) {
-        console.error("🛑 STT parse error:", err);
-      }
-    };
+  ws.onmessage = (event) => {
+  const { text, final } = JSON.parse(event.data);
+
+  console.log("STT raw:", text); // what you're getting
+  const output = sttLang === 'hi' && /^[a-zA-Z\s]+$/.test(text)
+    ? Sanscript.t(text, 'itrans', 'devanagari')
+    : text;
+
+  console.log("STT converted:", output); // what's displayed
+
+  if (!final) setPartial(output);
+  else {
+    setPartial('');
+    stopRecording();
+    sendToChat(output);
+  }
+};
+
+  //   ws.onmessage = (event) => {
+  //     if (typeof event.data !== "string") return;
+  //     try {
+  //       const { text, final } = JSON.parse(event.data);
+  //       if (!final) setPartial(text);
+  //       else {
+  //         setPartial("");
+  //         stopRecording();
+  //         sendToChat(text);
+  //       }
+  //     } catch (err) {
+  //       console.error("🛑 STT parse error:", err);
+  //     }
+  //   };
   };
 
   const stopRecording = () => {
@@ -237,20 +265,23 @@ const Assistant = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text })
       });
-      const { answer } = await res.json();
+      // const { answer } = await res.json();
+      const { answer, lang } = await res.json();
       setMessages(prev => [...prev, { from: "bot", text: answer }]);
-      playTTS(answer);
+      // playTTS(answer);
+      playTTS(answer, lang); 
     } catch (err) {
       console.error("❌ Chat error:", err.message);
     }
   };
 
-  const playTTS = async (text) => {
+  const playTTS = async (text, lang = "en") => {
     try {
       const res = await fetch("http://localhost:8080/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text })
+        // body: JSON.stringify({ text })
+        body: JSON.stringify({ text, lang }) 
       });
       const audioBlob = await res.blob();
       const audioURL = URL.createObjectURL(audioBlob);
@@ -279,6 +310,18 @@ const Assistant = () => {
             <div className="text-sm italic text-gray-500">{partial}</div>
           )}
         </div>
+        
+        <div className="flex items-center gap-2 mb-4">
+          <label className="text-sm font-medium">STT Language:</label>
+          <select
+            value={sttLang}
+            onChange={e => setSttLang(e.target.value)}
+            className="border px-2 py-1 rounded text-sm"
+          >
+            <option value="en">English</option>
+            <option value="hi">हिन्दी</option>
+          </select>
+        </div>
 
         <div className="mt-4 flex gap-2">
           <button
@@ -288,6 +331,21 @@ const Assistant = () => {
           >
             <FiMic />
           </button>
+
+          {/* <input
+  value={inputText}
+  onChange={(e) => setInputText(e.target.value)}
+  onKeyDown={(e) => {
+    if (e.key === "Enter") {
+      const transliterated = sttLang === 'hi'
+        ? Sanscript.t(inputText, 'itrans', 'devanagari')
+        : inputText;
+      sendToChat(transliterated);
+    }
+  }}
+  placeholder="Type your message..."
+  className="flex-1 px-4 py-2 border rounded-md"
+/> */}
 
           <input
             value={inputText}
@@ -309,7 +367,10 @@ const Assistant = () => {
 
       {/* RIGHT: Sidebar */}
       <aside className="w-full md:w-80 space-y-6">
-        <div className="bg-white border rounded-xl shadow p-4">
+        <div
+        onClick={handleGoToDailyInfo}
+        className="cursor-pointer bg-white border rounded-xl shadow p-4 hover:shadow-lg transition"
+        >
           <h3 className="text-lg font-semibold mb-4">📊 Daily Health Timeline</h3>
           <ul className="space-y-3 text-sm">
             <li className="flex items-start gap-2">
@@ -347,16 +408,19 @@ const Assistant = () => {
           <h3 className="text-lg font-semibold mb-3">⚡ Quick Actions</h3>
           <div className="flex flex-wrap gap-2 text-sm">
             <button className="border px-3 py-1 rounded hover:bg-gray-100 flex items-center gap-1">
-              <BsCapsule /> Log Medicine
+              <BsCapsule /> Ask About Meds Info
             </button>
             <button className="border px-3 py-1 rounded hover:bg-gray-100 flex items-center gap-1">
-              <FaUtensils /> Log Meal
+              <FaUtensils /> Diet Info
             </button>
             <button className="border px-3 py-1 rounded hover:bg-gray-100 flex items-center gap-1">
-              <BsPhone /> Call Family
+              <BsPhone /> Share Your Thoughts
             </button>
             <button className="border px-3 py-1 rounded hover:bg-gray-100 flex items-center gap-1">
               <BsPlusCircle /> New Chat
+            </button>
+            <button className="border px-3 py-1 rounded hover:bg-gray-100 flex items-center gap-1">
+              <BsFlower1 />	 Talk Mental & Physical Wellbeing
             </button>
           </div>
         </div>
@@ -375,4 +439,3 @@ const Assistant = () => {
 };
 
 export default Assistant;
-
