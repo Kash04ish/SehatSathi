@@ -30,7 +30,9 @@ EXTRA_MODELS: Dict[str, str] = {
 }
 
 SAMPLE_RATE = 16000
-WS_PORT = int(os.getenv("STT_WS_PORT", "2700"))
+# WS_PORT = int(os.getenv("STT_WS_PORT", "2700"))
+WS_PORT = int(os.getenv("PORT", "2700"))
+
 
 # Pre-load default model; others will lazy-load on demand
 if not os.path.exists(DEFAULT_MODEL_PATH):
