@@ -168,6 +168,7 @@ const Assistant = () => {
   const handleGoToDailyInfo = () => {
     navigate("/dashboard#daily-info"); 
   };
+
   const [messages, setMessages] = useState([
     { from: "bot", text: "Namaste! SehatSathi here. How can I help you manage your health today?" }
   ]);
@@ -212,12 +213,18 @@ const Assistant = () => {
   ws.onmessage = (event) => {
   const { text, final } = JSON.parse(event.data);
 
-  console.log("STT raw:", text); // what you're getting
-  const output = sttLang === 'hi' && /^[a-zA-Z\s]+$/.test(text)
-    ? Sanscript.t(text, 'itrans', 'devanagari')
-    : text;
+  console.log("STT raw:", text); 
+  
+  // const output = sttLang === 'hi' && /^[a-zA-Z\s]+$/.test(text)
+  //   ? Sanscript.t(text, 'itrans', 'devanagari')
+  //   : text;
 
-  console.log("STT converted:", output); // what's displayed
+    const isRoman = /^[a-zA-Z\s]+$/.test(text);
+    const output = sttLang === 'hi'
+      ? (isRoman ? Sanscript.t(text, 'itrans', 'devanagari') : text)
+      : text;  
+
+  console.log("STT converted:", output); 
 
   if (!final) setPartial(output);
   else {
@@ -293,12 +300,21 @@ const Assistant = () => {
     }
   };
 
+   const chatRef = useRef(null);
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+
   return (
     <div className="min-h-50 bg-gray-50 text-gray-900 font-sans p-6 flex flex-col md:flex-row gap-6">
       {/* LEFT: Chat Area */}
       <div className="flex-1 bg-white rounded-xl shadow-md p-6 flex flex-col">
         <h2 className="text-xl font-bold mb-4">💬 SehatSathi Assistant</h2>
-        <div className="flex-1 overflow-y-auto space-y-4 pr-2">
+        {/* <div className="flex-1 overflow-y-auto space-y-4 pr-2"> */}
+        <div ref={chatRef} className="flex-1 overflow-y-auto space-y-4 pr-2 max-h-[400px]">
           {messages.map((msg, i) => (
             <div key={i} className={`flex ${msg.from === "bot" ? "justify-start" : "justify-end"}`}>
               <div className={`max-w-[75%] px-4 py-2 rounded-lg ${msg.from === "bot" ? "bg-gray-100" : "bg-blue-100 text-right"}`}>
@@ -311,17 +327,6 @@ const Assistant = () => {
           )}
         </div>
         
-        <div className="flex items-center gap-2 mb-4">
-          <label className="text-sm font-medium">STT Language:</label>
-          <select
-            value={sttLang}
-            onChange={e => setSttLang(e.target.value)}
-            className="border px-2 py-1 rounded text-sm"
-          >
-            <option value="en">English</option>
-            <option value="hi">हिन्दी</option>
-          </select>
-        </div>
 
         <div className="mt-4 flex gap-2">
           <button
@@ -332,21 +337,6 @@ const Assistant = () => {
             <FiMic />
           </button>
 
-          {/* <input
-  value={inputText}
-  onChange={(e) => setInputText(e.target.value)}
-  onKeyDown={(e) => {
-    if (e.key === "Enter") {
-      const transliterated = sttLang === 'hi'
-        ? Sanscript.t(inputText, 'itrans', 'devanagari')
-        : inputText;
-      sendToChat(transliterated);
-    }
-  }}
-  placeholder="Type your message..."
-  className="flex-1 px-4 py-2 border rounded-md"
-/> */}
-
           <input
             value={inputText}
             onChange={e => setInputText(e.target.value)}
@@ -354,6 +344,7 @@ const Assistant = () => {
             placeholder="Type your message..."
             className="flex-1 px-4 py-2 border rounded-md"
           />
+          
 
           <button
             onClick={() => sendToChat(inputText)}
@@ -362,7 +353,19 @@ const Assistant = () => {
           >
             <FiSend />
           </button>
+
         </div>
+        <div className="flex items-center gap-2 mb-4 mt-2">
+            <label className="text-sm font-medium"> 🗣️ Choose How Your Saathi Speaks:</label>
+            <select
+              value={sttLang}
+              onChange={e => setSttLang(e.target.value)}
+              className="border px-2 py-1 rounded text-sm"
+            >
+              <option value="en">English</option>
+              <option value="hi">हिन्दी</option>
+            </select>
+          </div>
       </div>
 
       {/* RIGHT: Sidebar */}

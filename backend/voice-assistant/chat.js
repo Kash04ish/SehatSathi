@@ -109,7 +109,7 @@ console.log("📤 System prompt being used:", systemPrompt);
       model: 'gpt-4o-mini',
       messages: [
         { role: 'system', content: systemPrompt },
-        { role: 'user', content: "[lang=hi] " + userText }
+        { role: 'user', content: userText }
       ]
     });
 
