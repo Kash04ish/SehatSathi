@@ -28,9 +28,9 @@
 //   useNewUrlParser:    true,
 //   useUnifiedTopology: true
 // })
-//   .then(() => console.log('✅ MongoDB connected'))
+//   .then(() => console.log('MongoDB connected'))
 //   .catch(err => {
-//     console.error('❌ MongoDB connection error', err);
+//     console.error(' MongoDB connection error', err);
 //     process.exit(1);
 //   });
 
@@ -90,7 +90,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 })
   .then(() => console.log('✅ MongoDB connected'))
   .catch(err => {
-    console.error('❌ MongoDB connection error', err);
+    console.error('MongoDB connection error', err);
     process.exit(1);
   });
 
@@ -124,7 +124,7 @@ app.post('/chat', async (req, res) => {
     const { answer, lang } = await chat(req.body.text || '');
     res.json({ answer, lang }); // includes language
   } catch (err) {
-    console.error("❌ Chat handler failed:", err);
+    console.error("Chat handler failed:", err);
     res.status(500).json({ error: 'chat-error' });
   }
 });
@@ -139,7 +139,7 @@ app.post('/tts', async (req, res) => {
     const mp3 = await tts(text, lang); // uses override
     res.set('Content-Type', 'audio/mpeg').send(mp3);
   } catch (err) {
-    console.error("❌ TTS failed:", err);
+    console.error("TTS failed:", err);
     res.status(500).send("TTS error");
   }
 });

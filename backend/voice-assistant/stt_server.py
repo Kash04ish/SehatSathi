@@ -34,7 +34,7 @@ WS_PORT = int(os.getenv("STT_WS_PORT", "2700"))
 
 # Pre-load default model; others will lazy-load on demand
 if not os.path.exists(DEFAULT_MODEL_PATH):
-    print(f"❌ Model path not found: {DEFAULT_MODEL_PATH}", file=sys.stderr)
+    print(f"Model path not found: {DEFAULT_MODEL_PATH}", file=sys.stderr)
     sys.exit(1)
 
 _cached_models: Dict[str, Model] = {"en": Model(DEFAULT_MODEL_PATH)}
@@ -44,7 +44,7 @@ def get_model(lang: str) -> Model:
     if lang not in _cached_models:
         path = EXTRA_MODELS.get(lang)
         if not path or not os.path.exists(path):
-            print(f"⚠️  Falling back to English – model not found for {lang}", file=sys.stderr)
+            print(f"Falling back to English – model not found for {lang}", file=sys.stderr)
             return _cached_models["en"]
         _cached_models[lang] = Model(path)
     return _cached_models[lang]
