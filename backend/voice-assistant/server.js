@@ -98,7 +98,10 @@ mongoose.connect(process.env.MONGODB_URI, {
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  // origin: 'http://localhost:5173',
+  origin: process.env.NODE_ENV === 'production'
+  ? 'https://your-frontend.onrender.com'
+  : 'http://localhost:5173',
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type']
 }));
@@ -110,7 +113,7 @@ const port = process.env.PORT || 8080;
 app.use(cors()); 
 app.use(express.json({ limit: '2mb' }));
 
-//API ROUTES──
+//API ROUTES
 app.use('/api/prescription', prescriptionRoutes);
 app.use('/api/reminders', reminderRoutes);
 app.use('/api/med-info', medicineInfoRoutes);
