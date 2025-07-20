@@ -11,6 +11,11 @@ export function initSTT(wss) {
     const pyWs = new WebSocket(PY_WS_URL);
 
     pyWs.on('message', (msg) => clientWs.send(msg));
+    // pyWs.on('message', (msg) => {
+    //   if (typeof msg === 'string') {
+    //     clientWs.send(msg);
+    //   }
+    // });
     pyWs.on('error', (err) => { console.error('Python STT error:', err); clientWs.close(); });
 
     clientWs.on('message', (audioChunk) => {
