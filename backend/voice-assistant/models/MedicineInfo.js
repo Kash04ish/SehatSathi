@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
 /**
- * We stash the **entire** JSON that GPT-4o returns (whatever shape it has)
- * in `aiResponse`, so the client can retrieve the exact data later.
+ * We stash the entire JSON that GPT-4o returns (whatever shape it has)
+ * in aiResponse, so the client can retrieve the exact data later.
  */
 const schema = new mongoose.Schema(
   {
@@ -13,7 +13,7 @@ const schema = new mongoose.Schema(
     },
 
     aiResponse: {
-      type: mongoose.Schema.Types.Mixed,   // flexible – accepts any JSON object
+      type: mongoose.Schema.Types.Mixed,   
       required: true,
     },
 
@@ -22,7 +22,7 @@ const schema = new mongoose.Schema(
       default: Date.now,
     },
   },
-  { collection: 'medicineinfos' }          // (optional) explicit collection name
+  { collection: 'medicineinfos' }          
 );
 
 export default mongoose.model('MedicineInfo', schema);

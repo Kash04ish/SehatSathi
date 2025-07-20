@@ -19,7 +19,7 @@
 // import { chat }    from './chat.js';
 // import { tts }     from './tts.js';
 
-// // ─── NEW: load our prescription/reminder feature ───────────────────────────────
+// //NEW: load our prescription/reminder feature
 // import prescriptionRoutes from './routes/prescription.js';
 // import reminderRoutes     from './routes/reminder.js';
 // import startReminderCron  from './scheduler/reminderCron.js';
@@ -74,7 +74,7 @@ import { WebSocketServer } from 'ws';
 
 dotenv.config();
 
-// ─── IMPORT ROUTES & MODULES ──────────────────────────────────────
+//IMPORT ROUTES & MODULES
 import medicineInfoRoutes from './routes/medicineInfo.js';
 import { initSTT } from './stt.js';
 import { chat } from './chat.js';
@@ -83,7 +83,7 @@ import prescriptionRoutes from './routes/prescription.js';
 import reminderRoutes from './routes/reminder.js';
 import startReminderCron from './scheduler/reminderCron.js';
 
-// ─── CONNECT MONGODB ──────────────────────────────────────────────
+//CONNECT MONGODB
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -94,7 +94,7 @@ mongoose.connect(process.env.MONGODB_URI, {
     process.exit(1);
   });
 
-// ─── EXPRESS SERVER SETUP ─────────────────────────────────────────
+//EXPRESS SERVER SETUP
 const app = express();
 
 app.use(cors({
@@ -110,7 +110,7 @@ const port = process.env.PORT || 8080;
 app.use(cors()); 
 app.use(express.json({ limit: '2mb' }));
 
-// ─── API ROUTES ───────────────────────────────────────────────────
+//API ROUTES──
 app.use('/api/prescription', prescriptionRoutes);
 app.use('/api/reminders', reminderRoutes);
 app.use('/api/med-info', medicineInfoRoutes);
@@ -136,7 +136,7 @@ app.post('/chat', async (req, res) => {
 app.post('/tts', async (req, res) => {
   try {
     const { text, lang } = req.body;
-    const mp3 = await tts(text, lang); // uses override
+    const mp3 = await tts(text, lang); // override
     res.set('Content-Type', 'audio/mpeg').send(mp3);
   } catch (err) {
     console.error("TTS failed:", err);
@@ -144,13 +144,13 @@ app.post('/tts', async (req, res) => {
   }
 });
 
-// ─── WEBSOCKET SERVER ─────────────────────────────────────────────
+//WEBSOCKET SERVER 
 const httpServer = createServer(app);
 const wss = new WebSocketServer({ server: httpServer, path: '/ws/stt' });
 
 initSTT(wss);
 
-// ─── START SERVER ─────────────────────────────────────────────────
+//START SERVER
 httpServer.listen(port, () => {
   console.log(`Voice backend running at http://localhost:${port}`);
   startReminderCron(); 

@@ -1,177 +1,24 @@
-// import { useState, useRef, useEffect } from "react";
-
-// const Assistant = () => {
-//   const [messages, setMessages] = useState([
-//     { from: "bot", text: "Namaste! SehatSathi here. How can I help you manage your health today?" }
-//   ]);
-//   const [partial, setPartial] = useState("");
-//   const [isRecording, setIsRecording] = useState(false);
-//   const [inputText, setInputText] = useState("");
-
-//   const audioContextRef = useRef(null);
-//   const micStreamRef = useRef(null);
-//   const workletNodeRef = useRef(null);
-//   const sttWsRef = useRef(null);
-//   const ttsWsRef = useRef(null);
-
-//   useEffect(() => {
-//     return () => stopRecording(); // Cleanup on unmount
-//   }, []);
-
-//   const startRecording = async () => {
-//     const audioContext = new AudioContext({ sampleRate: 16000 });
-//     await audioContext.audioWorklet.addModule("/worklets/pcm-processor.js");
-
-//     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-//     const micSource = audioContext.createMediaStreamSource(stream);
-//     const worklet = new AudioWorkletNode(audioContext, "pcm-processor");
-
-//     const ws = new WebSocket("ws://localhost:2700"); // STT WebSocket
-//     ws.binaryType = "arraybuffer";
-
-//     ws.onopen = () => {
-//       console.log("🎤 STT WebSocket connected");
-//       worklet.port.onmessage = (e) => {
-//         if (ws.readyState === WebSocket.OPEN) {
-//           ws.send(e.data);
-//         }
-//       };
-//       micSource.connect(worklet);
-//       audioContextRef.current = audioContext;
-//       micStreamRef.current = stream;
-//       workletNodeRef.current = worklet;
-//       sttWsRef.current = ws;
-//       setIsRecording(true);
-//     };
-
-//     ws.onmessage = (event) => {
-//       const isText = typeof event.data === "string";
-//       if (!isText) return;
-
-//       try {
-//         const { text, final } = JSON.parse(event.data);
-//         if (!final) {
-//           setPartial(text);
-//         } else {
-//           setPartial("");
-//           stopRecording();
-//           sendToChat(text);
-//         }
-//       } catch (err) {
-//         console.error("🛑 STT parse error:", err);
-//       }
-//     };
-
-//     ws.onerror = (e) => console.error("❌ STT WebSocket error", e);
-//   };
-
-//   const stopRecording = () => {
-//     setIsRecording(false);
-//     setPartial("");
-
-//     workletNodeRef.current?.disconnect();
-//     audioContextRef.current?.close();
-//     micStreamRef.current?.getTracks()?.forEach(t => t.stop());
-//     sttWsRef.current?.close();
-
-//     audioContextRef.current = null;
-//     micStreamRef.current = null;
-//     workletNodeRef.current = null;
-//     sttWsRef.current = null;
-//   };
-
-//   const sendToChat = async (text) => {
-//     setMessages(prev => [...prev, { from: "user", text }]);
-//     try {
-//       const res = await fetch("http://localhost:8080/chat", {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify({ text })
-//       });
-
-//       const { answer } = await res.json();
-//       setMessages(prev => [...prev, { from: "bot", text: answer }]);
-//       playTTS(answer);
-//     } catch (err) {
-//       console.error("❌ Chat error:", err.message);
-//     }
-//   };
-
-//     const playTTS = async (text) => {
-//       try {
-//         const res = await fetch("http://localhost:8080/tts", {
-//           method: "POST",
-//           headers: { "Content-Type": "application/json" },
-//           body: JSON.stringify({ text })
-//         });
-
-//         const audioBlob = await res.blob();
-//         const audioURL = URL.createObjectURL(audioBlob);
-//         const audio = new Audio(audioURL);
-//         audio.onended = () => URL.revokeObjectURL(audioURL);
-//         audio.play();
-//       } catch (err) {
-//         console.error("❌ TTS fetch failed:", err);
-//       }
-//     };
-
-
-//   return (
-//     <div className="min-h-screen p-6 font-sans bg-white text-gray-900">
-//       <div className="chat border p-4 max-h-[70vh] overflow-auto space-y-2">
-//         {messages.map((msg, i) => (
-//           <div key={i}>
-//             <strong>{msg.from === "bot" ? "Bot" : "You"}:</strong> {msg.text}
-//           </div>
-//         ))}
-//         {partial && <div className="italic text-gray-500">…{partial}</div>}
-//       </div>
-
-//       <div className="controls mt-4 flex gap-2">
-//         <button
-//           onClick={() => (isRecording ? stopRecording() : startRecording())}
-//           className={`px-4 py-2 rounded text-white ${isRecording ? "bg-red-600" : "bg-green-600"}`}
-//         >
-//           {isRecording ? "Stop" : "🎤 Speak"}
-//         </button>
-
-//         <input
-//           type="text"
-//           value={inputText}
-//           onChange={e => setInputText(e.target.value)}
-//           placeholder="Type message..."
-//           onKeyDown={e => e.key === "Enter" && sendToChat(inputText)}
-//           className="flex-1 border px-4 py-2 rounded"
-//         />
-
-//         <button
-//           onClick={() => sendToChat(inputText)}
-//           className="px-4 py-2 bg-blue-600 text-white rounded"
-//         >
-//           Send
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Assistant;
 import Sanscript from 'sanscript';
 import { useState, useRef, useEffect } from "react";
-import { FiMic, FiSend, FiUser, FiAlertCircle } from "react-icons/fi";
+import { FiMic, FiSend, FiAlertCircle } from "react-icons/fi";
 import { BsCapsule, BsPhone, BsFlower1, BsPlusCircle } from "react-icons/bs";
 import { FaRegClock, FaBed, FaUtensils } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const Assistant = () => {
+  //for navigation
   const navigate = useNavigate();
   const handleGoToDailyInfo = () => {
     navigate("/dashboard#daily-info"); 
   };
 
+  // Default Message at first
   const [messages, setMessages] = useState([
     { from: "bot", text: "Namaste! SehatSathi here. How can I help you manage your health today?" }
   ]);
+  
+  //connect to websocket stt_server audio
+
   const [partial, setPartial] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const [inputText, setInputText] = useState("");
@@ -210,44 +57,25 @@ const Assistant = () => {
       setIsRecording(true);
     };
 
-  ws.onmessage = (event) => {
-  const { text, final } = JSON.parse(event.data);
+    ws.onmessage = (event) => {
+      const { text, final } = JSON.parse(event.data);
 
-  console.log("STT raw:", text); 
-  
-  // const output = sttLang === 'hi' && /^[a-zA-Z\s]+$/.test(text)
-  //   ? Sanscript.t(text, 'itrans', 'devanagari')
-  //   : text;
+      console.log("STT raw:", text); 
+     
+        const isRoman = /^[a-zA-Z\s]+$/.test(text);
+        const output = sttLang === 'hi'
+          ? (isRoman ? Sanscript.t(text, 'itrans', 'devanagari') : text)
+          : text;  
 
-    const isRoman = /^[a-zA-Z\s]+$/.test(text);
-    const output = sttLang === 'hi'
-      ? (isRoman ? Sanscript.t(text, 'itrans', 'devanagari') : text)
-      : text;  
+      console.log("STT converted:", output); 
 
-  console.log("STT converted:", output); 
-
-  if (!final) setPartial(output);
-  else {
-    setPartial('');
-    stopRecording();
-    sendToChat(output);
-  }
-};
-
-  //   ws.onmessage = (event) => {
-  //     if (typeof event.data !== "string") return;
-  //     try {
-  //       const { text, final } = JSON.parse(event.data);
-  //       if (!final) setPartial(text);
-  //       else {
-  //         setPartial("");
-  //         stopRecording();
-  //         sendToChat(text);
-  //       }
-  //     } catch (err) {
-  //       console.error("🛑 STT parse error:", err);
-  //     }
-  //   };
+      if (!final) setPartial(output);
+      else {
+        setPartial('');
+        stopRecording();
+        sendToChat(output);
+      }
+    };
   };
 
   const stopRecording = () => {
@@ -278,7 +106,7 @@ const Assistant = () => {
       // playTTS(answer);
       playTTS(answer, lang); 
     } catch (err) {
-      console.error("❌ Chat error:", err.message);
+      console.error("Chat error:", err.message);
     }
   };
 
@@ -296,7 +124,7 @@ const Assistant = () => {
       audio.onended = () => URL.revokeObjectURL(audioURL);
       audio.play();
     } catch (err) {
-      console.error("❌ TTS fetch failed:", err);
+      console.error("TTS fetch failed:", err);
     }
   };
 
@@ -310,10 +138,9 @@ const Assistant = () => {
 
   return (
     <div className="min-h-50 bg-gray-50 text-gray-900 font-sans p-6 flex flex-col md:flex-row gap-6">
-      {/* LEFT: Chat Area */}
+      {/* Left Part: Chat Area  */}
       <div className="flex-1 bg-white rounded-xl shadow-md p-6 flex flex-col">
         <h2 className="text-xl font-bold mb-4">💬 SehatSathi Assistant</h2>
-        {/* <div className="flex-1 overflow-y-auto space-y-4 pr-2"> */}
         <div ref={chatRef} className="flex-1 overflow-y-auto space-y-4 pr-2 max-h-[400px]">
           {messages.map((msg, i) => (
             <div key={i} className={`flex ${msg.from === "bot" ? "justify-start" : "justify-end"}`}>
@@ -327,7 +154,6 @@ const Assistant = () => {
           )}
         </div>
         
-
         <div className="mt-4 flex gap-2">
           <button
             onClick={() => (isRecording ? stopRecording() : startRecording())}
@@ -368,7 +194,7 @@ const Assistant = () => {
           </div>
       </div>
 
-      {/* RIGHT: Sidebar */}
+      {/* Right Part: Sidebars */}
       <aside className="w-full md:w-80 space-y-6">
         <div
         onClick={handleGoToDailyInfo}

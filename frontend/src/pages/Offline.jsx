@@ -5,30 +5,7 @@ const Offline = () => {
   const phoneNumber = "+919876543210";
   const message = "🚨 Emergency Alert from SehatSathi! Please respond ASAP.";
   const smsLink = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
-
   window.location.href = smsLink;
-// const sendEmergencySMS = async () => {
-  // const phoneNumber = "+919876543210";
-  // const message = "🚨 Emergency Alert from SehatSathi!";
-
-  // try {
-  //   await fetch('http://localhost:4000/api/send-sms', {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify({
-  //       to: phoneNumber,
-  //       body: message,
-  //     }),
-  //   });
-
-  //   const smsLink = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
-  //   window.location.href = smsLink;
-
-  //   alert('✅ Emergency SMS triggered!');
-  // } catch (err) {
-  //   console.error("❌ SMS Trigger Error:", err);
-  //   alert('❌ Failed to send Emergency SMS.');
-  // }
 };
 
   return (
@@ -61,7 +38,7 @@ const Offline = () => {
             placeholder="Ask something..."
             className="w-full border rounded p-2"
           />
-          <p className="text-green-600 text-sm">🧠 Emotion Detected: <strong>Positive</strong></p>
+          <p className="text-green-600 text-sm">Emotion Detected: <strong>Positive</strong></p>
         </div>
 
         {/* Emergency SMS Trigger */}

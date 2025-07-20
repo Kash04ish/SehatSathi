@@ -16,16 +16,13 @@ const Home = () => {
 
   return (
     <div className="font-sans text-gray-800">
-      {/* HERO */}
+      {/* Hero Section */}
       <section className="h-screen text-center bg-white-100 py-4 px-4" >
         <img
           src={frontImg}
           alt="Elderly woman talkking to SehatSathi"
           className="absolute inset-0 w-full h-full object-cover opacity-10 z-0"
         />
-        {/* <h2 className="text-3xl md:text-6xl font-bold items-center justify-center max-w-3xl">
-            Your Health, Our Voice, Always with You.
-        </h2> */}
         <div className="min-h-0.5 flex items-center justify-center px-4 pt-30 pb-10">
         <h2 className="text-3xl md:text-6xl font-bold text-center max-w-2xl">
             Your Health, Our Voice, Always with You.
@@ -51,19 +48,10 @@ const Home = () => {
           </button>
         </Link>
       </div>
-
-        {/* <div className="mt-6 flex flex-wrap justify-center gap-4">
-          <button onClick={goToAssistant} className="bg-teal-600 text-white px-6 py-2 rounded hover:bg-teal-700 transition cursor-pointer">
-            Talk to SehatSathi AI Assistant
-          </button>
-          <button onClick={goToOffline} className="border border-teal-600 text-teal-600 px-6 py-2 rounded hover:bg-teal-100 transition cursor-pointer">
-            Try Offline Mode
-          </button>
-        </div> */}
         
       </section>
 
-      {/* FEATURES */}
+      {/* Features Section */}
       <section className="bg-white py-8 text-center">
         <h2 className="text-5xl font-bold mb-15">Seamless Health Management, Tailored For You</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 max-w-6xl mx-auto">
@@ -105,7 +93,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* DEMO + LANGUAGE */}
+      {/* Demo Img + Language Section */}
       <section className="bg-white-50 py-12 px-6">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-12">
           <div className="flex-1 text-center">
@@ -145,7 +133,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* UPCOMING FEATURE */}
+      {/* Upcoming Feature Section */}
       <section className="text-center py-10 bg-white">
         <h4 className="text-3xl text-red-500 font-semibold">Upcoming Feature: Choose Your Saathi’s Voice</h4>
         <p className="text-gray-500 mt-2">
@@ -156,7 +144,7 @@ const Home = () => {
         </p>
       </section>
 
-      {/* TESTIMONIALS */}
+      {/* Testimonial Section - Just For Branding */}
       <section className="bg-white-50 py-16 px-4 text-center">
         <h2 className="text-4xl font-bold mb-10">What Our Users Say</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -187,7 +175,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* PARTNERS */}
+      {/* Partners Section - Just for Brand */}
       <section className="bg-white text-center py-10">
         <h3 className="text-3xl font-bold mb-6">Our Valued Partners</h3>
         <div className="flex justify-center flex-wrap gap-6">

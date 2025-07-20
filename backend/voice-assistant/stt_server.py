@@ -1,4 +1,3 @@
-# #!/usr/bin/env python3
 # """
 # stt_server.py – WebSocket wrapper around Vosk for English & Hindi
 
@@ -56,7 +55,6 @@
 #     await ws.send(json.dumps({"text": text, "final": final}))
 
 # async def handle_connection(ws):
-#     # ---- Optional language control packet ----------------------------------
 #     try:
 #         first_msg = await ws.recv()
 #     except ConnectionClosedOK:
@@ -108,7 +106,7 @@
 
 # async def main():
 #     async with websockets.serve(handle_connection, "0.0.0.0", WS_PORT, max_size=None):
-#         print(f"🗣️  STT WS (multi-lingual) running on ws://localhost:{WS_PORT}")
+#         print(f"STT WS (multi-lingual) running on ws://localhost:{WS_PORT}")
 #         await asyncio.Future()  # run forever
 
 # if __name__ == "__main__":
@@ -200,7 +198,7 @@ async def process_audio_stream(ws, recogniser: KaldiRecognizer, first_chunk: byt
     except ConnectionClosedOK:
         pass
 
-# 🩺 Minimal HTTP server for Render health check
+# Minimal HTTP server for Render health check
 class HealthHandler(BaseHTTPRequestHandler):
     def do_HEAD(self):
         self.send_response(200)
@@ -211,7 +209,7 @@ class HealthHandler(BaseHTTPRequestHandler):
         self.wfile.write(b"STT server OK")
 
 def start_http_server():
-    http_port = 8080  # Render expects some HTTP route to probe
+    http_port = 8080 
     server = HTTPServer(("0.0.0.0", http_port), HealthHandler)
     print("🩺 Healthcheck running on port 8080")
     server.serve_forever()
@@ -222,8 +220,8 @@ async def main():
 
     # Start WebSocket server
     async with websockets.serve(handle_connection, "0.0.0.0", WS_PORT, max_size=None):
-        print(f"🗣️ WebSocket STT server running on ws://0.0.0.0:{WS_PORT}")
-        await asyncio.Future()  # Run forever
+        print(f"WebSocket STT server running on ws://0.0.0.0:{WS_PORT}")
+        await asyncio.Future()  
 
 if __name__ == "__main__":
     asyncio.run(main())

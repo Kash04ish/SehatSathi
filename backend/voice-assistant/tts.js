@@ -21,8 +21,8 @@ export async function tts(text = '') {
     model: 'tts-1',
     voice: 'alloy',           // multi-lingual voice works for hi & en
     input: text,
-    response_format: 'mp3',   // same param name as before
-    language: langHint        // ignored by older SDKs but harmless
+    response_format: 'mp3',  
+    language: langHint        // ignored by older SDKs harmless
   });
 
   return Buffer.from(await speech.arrayBuffer());

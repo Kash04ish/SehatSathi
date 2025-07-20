@@ -1,6 +1,7 @@
 import WebSocket from 'ws';
 
-const PY_WS_URL = 'ws://localhost:2700';
+// const PY_WS_URL = 'ws://localhost:2700';
+const PY_WS_URL = 'wss://sehatsathi-sttt-server.onrender.com';
 
 export function initSTT(wss) {
   wss.on('connection', (clientWs) => {

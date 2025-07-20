@@ -20,12 +20,13 @@ const Scanner = () => {
 
   const medicineInputRef = useRef();
   const prescriptionInputRef = useRef();
-  const userId = "test-temp-user"; // Replace with real user ID when using auth
+  const userId = "test-temp-user"; 
 
+  //connect to backend server - used id
   useEffect(() => {
     axios.get("http://localhost:8080/api/med-info/recent")
       .then(res => setRecentIds(res.data.meds || []))
-      .catch(err => console.error("❌ Failed to fetch recent scans:", err));
+      .catch(err => console.error("Failed to fetch recent scans:", err));
 
     axios.get("http://localhost:8080/api/reminders/all", { params: { userId } })
       .then(res => {
@@ -40,12 +41,11 @@ const Scanner = () => {
         });
         setAllReminders(patched);
       })
-      .catch(err => console.error("❌ Failed to fetch reminders:", err));
+      .catch(err => console.error("Failed to fetch reminders:", err));
   }, []);
 
   const handleScan = async () => {
     if (!medicineFile) return setError("📸 Please select a medicine image first.");
-
     const formData = new FormData();
     formData.append("file", medicineFile);
     formData.append("userId", userId);
@@ -58,8 +58,8 @@ const Scanner = () => {
       if (!data.saved) throw new Error("Not saved.");
       fetchById(data.medicineId);
     } catch (err) {
-      console.error("❌ Scan failed:", err);
-      setError("❌ Scan failed. Please try again.");
+      console.error("Scan failed:", err);
+      setError("Scan failed. Please try again.");
     }
   };
 
@@ -77,8 +77,8 @@ const Scanner = () => {
       );
       setError("");
     } catch (err) {
-      console.error("❌ Fetch failed:", err);
-      setError("❌ Could not load scan. Check the ID and try again.");
+      console.error("Fetch failed:", err);
+      setError("Could not load scan. Check the ID and try again.");
     }
   };
 
@@ -94,11 +94,11 @@ const Scanner = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      alert(`🧠 Prescription extracted! ${res.data.inserted} reminders created.`);
+      // alert(`Prescription extracted! ${res.data.inserted} reminders created.`);
       setError("");
     } catch (err) {
-      console.error("❌ Prescription analysis failed:", err);
-      setError("❌ Failed to extract prescription. Try again.");
+      console.error("Prescription analysis failed:", err);
+      setError("Failed to extract prescription. Try again.");
     }
   };
 
@@ -107,7 +107,7 @@ const Scanner = () => {
       await axios.post(`http://localhost:8080/api/reminders/${id}/ack`);
       setAllReminders((prev) => prev.filter((r) => r._id !== id));
     } catch (err) {
-      console.error("❌ Acknowledge failed:", err);
+      console.error("Acknowledge failed:", err);
     }
   };
 
@@ -298,146 +298,96 @@ const Scanner = () => {
             )}
           </section>
 
-          {/* Reminders */}
-          {/* <section className="border rounded-md p-4 bg-white shadow-sm">
-  <h4 className="text-md font-semibold mb-4">🕒 Medicine Reminders</h4>
-
-  {allReminders.length === 0 ? (
-    <p className="text-sm text-gray-400">No reminders found.</p>
-  ) : (
-    <div className="space-y-6">
-      {["Morning", "Afternoon", "Evening", "Night"].map((period) => {
-        const reminders = allReminders.filter(r => (r.timeOfDay || "Unscheduled") === period);
-        if (reminders.length === 0) return null;
-
-        return (
-          <div key={period}>
-            <h5 className="text-sm font-semibold text-gray-700 mb-2">{period}</h5>
-            <div className="flex overflow-x-auto gap-4 pb-2 custom-scrollbar">
-              {reminders.map((r) => (
-                <div
-                  key={r._id}
-                  className="flex-shrink-0 w-60 p-4 border border-gray-200 rounded-md shadow-sm bg-gray-50"
-                >
-                  <div className="font-medium text-gray-800 text-sm">{r.medName}</div>
-                  <div className="text-xs text-gray-500">
-                    🕓 {new Date(r.due).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                  </div>
-                  <div className="text-xs text-purple-700 mt-1">🍽️ {r.mealInstruction}</div>
-                  <div className="mt-2">
-                    <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                      r.remind ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"
-                    }`}>
-                      {r.remind ? "🔔 Remind" : "🔕 No Reminder"}
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => acknowledgeReminder(r._id)}
-                    className="mt-2 text-xs bg-green-50 border border-green-300 text-green-700 px-3 py-1 rounded hover:bg-green-100 transition w-full"
-                  >
-                    ✅ Taken
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  )}
-</section> */}
-
         </aside>
         
       </main>
-            {/* Reminders Horizontally right */}
-  <section className="border rounded-md p-4 bg-white shadow-sm overflow-hidden mx-16 ">
-  <h4 className="text-md font-semibold mb-4">🕒 Medicine Reminders</h4>
+        {/* Reminders*/}
+        <section className="border rounded-md p-4 bg-white shadow-sm overflow-hidden mx-16 ">
+        <h4 className="text-md font-semibold mb-4">🕒 Medicine Reminders</h4>
 
-  {allReminders.length === 0 ? (
-    <p className="text-sm text-gray-400">No reminders found.</p>
-  ) : (
-    <div className="space-y-8">
-      {["Morning", "Afternoon", "Evening", "Night"].map((period) => {
-        const reminders = allReminders.filter(r => (r.timeOfDay || "Unscheduled") === period);
-        if (reminders.length === 0) return null;
+        {allReminders.length === 0 ? (
+          <p className="text-sm text-gray-400">No reminders found.</p>
+        ) : (
+          <div className="space-y-8">
+            {["Morning", "Afternoon", "Evening", "Night"].map((period) => {
+              const reminders = allReminders.filter(r => (r.timeOfDay || "Unscheduled") === period);
+              if (reminders.length === 0) return null;
 
-        return (
-          <div key={period}>
-            <h5 className="text-sm font-semibold text-gray-700 mb-2">{period}</h5>
+              return (
+                <div key={period}>
+                  <h5 className="text-sm font-semibold text-gray-700 mb-2">{period}</h5>
 
-            {/* 👇 Scrollable horizontal row */}
-            <div className="relative">
-              <div className="overflow-x-auto custom-scrollbar">
-                <div className="flex gap-4 w-fit pr-2">
-                  {reminders.map((r) => (
-                    <div
-                      key={r._id}
-                      className="w-60 flex-shrink-0 p-4 border border-gray-200 rounded-md shadow-sm bg-gray-50"
-                    >
-                      <div className="font-medium text-gray-800 text-sm">{r.medName}</div>
-                      <div className="text-xs text-gray-500">
-                        🕓 {new Date(r.due).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                  {/* Scrollable horizontal row */}
+                  <div className="relative">
+                    <div className="overflow-x-auto custom-scrollbar">
+                      <div className="flex gap-4 w-fit pr-2">
+                        {reminders.map((r) => (
+                          <div
+                            key={r._id}
+                            className="w-60 flex-shrink-0 p-4 border border-gray-200 rounded-md shadow-sm bg-gray-50"
+                          >
+                            <div className="font-medium text-gray-800 text-sm">{r.medName}</div>
+                            <div className="text-xs text-gray-500">
+                              🕓 {new Date(r.due).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                            </div>
+                            {/* <div className="text-xs text-purple-700 mt-1">{r.mealInstruction}</div> */}
+                            <div className="mt-2">
+                              <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                                r.remind ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"
+                              }`}>
+                                {r.remind ? "Remind" : "No Reminder"}
+                              </span>
+                            </div>
+                            <button
+                              onClick={() => acknowledgeReminder(r._id)}
+                              className="mt-2 text-xs bg-green-50 border border-green-300 text-green-700 px-3 py-1 rounded hover:bg-green-100 transition w-full"
+                            >
+                              Taken
+                            </button>
+                          </div>
+                        ))}
                       </div>
-                      <div className="text-xs text-purple-700 mt-1">🍽️ {r.mealInstruction}</div>
-                      <div className="mt-2">
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                          r.remind ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"
-                        }`}>
-                          {r.remind ? "🔔 Remind" : "🔕 No Reminder"}
-                        </span>
-                      </div>
-                      <button
-                        onClick={() => acknowledgeReminder(r._id)}
-                        className="mt-2 text-xs bg-green-50 border border-green-300 text-green-700 px-3 py-1 rounded hover:bg-green-100 transition w-full"
-                      >
-                        ✅ Taken
-                      </button>
                     </div>
-                  ))}
+                  </div>
                 </div>
-              </div>
-            </div>
+              );
+            })}
           </div>
-        );
-      })}
-    </div>
-  )}
-</section>
-{/* visual guide */}
+        )}
+      </section>
+      {/* visual guide */}
       <div className="border rounded-md p-4 bg-white shadow-sm mt-10 mx-16">
-  <h3 className="text-lg font-semibold text-gray-800 mb-2">🔎 Visual Guide</h3>
-  <p className="text-sm text-gray-700 leading-relaxed">
-    Upload a medicine strip or prescription to extract text using OCR. AI then analyzes it to identify the medicine, its purpose, usage, and dietary warnings. Reminders are shown on the right to help you stay on track.
-  </p>
-</div>
+        <h3 className="text-lg font-semibold text-gray-800 mb-2">🔎 Visual Guide</h3>
+        <p className="text-sm text-gray-700 leading-relaxed">
+          Upload a medicine strip or prescription to extract text using OCR. AI then analyzes it to identify the medicine, its purpose, usage, and dietary warnings. Reminders are shown on the right to help you stay on track.
+        </p>
+      </div>
 
-<section className="bg-white py-6 px-4 md:px-16">
-  <div className="flex flex-col md:flex-row justify-center items-start gap-6">
-    
-    {/* Left Image */}
-    <div className="w-full md:w-1/2 lg:w-1/3 bg-gray-50 rounded-md shadow-md p-4 hover:shadow-lg transition">
-      <img
-        src={scannerGuideImage}
-        alt="How to use scanner"
-        className="rounded-md object-cover w-full h-auto md:h-[280px]"
-      />
-      <p className="text-center text-sm text-gray-600 mt-2">📸 Scan a medicine strip</p>
-    </div>
+      <section className="bg-white py-6 px-4 md:px-16">
+        <div className="flex flex-col md:flex-row justify-center items-start gap-6">
+          
+          {/* Left Image */}
+          <div className="w-full md:w-1/2 lg:w-1/3 bg-gray-50 rounded-md shadow-md p-4 hover:shadow-lg transition">
+            <img
+              src={scannerGuideImage}
+              alt="How to use scanner"
+              className="rounded-md object-cover w-full h-auto md:h-[280px]"
+            />
+            <p className="text-center text-sm text-gray-600 mt-2">📸 Scan a medicine strip</p>
+          </div>
 
-    {/* Right Image Copy */}
-    <div className="w-full md:w-1/2 lg:w-1/3 bg-gray-50 rounded-md shadow-md p-4 hover:shadow-lg transition">
-      <img
-        src={guide2}
-        alt="Scanner guide copy"
-        className="rounded-md object-cover w-full h-auto md:h-[280px]"
-      />
-      <p className="text-center text-sm text-gray-600 mt-2">📸 दवा की पट्टी स्कैन करें</p>
-    </div>
+          {/* Right Image - Hindi */}
+          <div className="w-full md:w-1/2 lg:w-1/3 bg-gray-50 rounded-md shadow-md p-4 hover:shadow-lg transition">
+            <img
+              src={guide2}
+              alt="Scanner guide copy"
+              className="rounded-md object-cover w-full h-auto md:h-[280px]"
+            />
+            <p className="text-center text-sm text-gray-600 mt-2">📸 दवा की पट्टी स्कैन करें</p>
+          </div>
 
-  </div>
-</section>
-
+        </div>
+      </section>
     </div>
   );
 };

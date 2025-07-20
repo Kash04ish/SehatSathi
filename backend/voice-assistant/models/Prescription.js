@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 const MedicineSchema = new mongoose.Schema({
   name:        String,
   dosage:      String,
-  times:       [String],  // ["08:00","14:00"] or ["3x a day"]
-  startDate:   String,    // keep original text
+  times:       [String],  // ["08:00","14:00"] or ["3 times a day]
+  startDate:   String,    
   endDate:     String,
   instructions:String
 }, { _id:false });
