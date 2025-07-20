@@ -1,8 +1,10 @@
 ## DEPLOYED LINK: 
 
 # SehatSathi- Voice‑First AI Health Companion for Elderly Bharat
+
 Whether you’re in a city or a village, getting medical tests and health advice should be simple, fast, and stress-free.
 **SehatSathi** is a multilingual voice assistant that helps older adults understand medications, talk menatal & physical well being, manage prescriptions, and receive timely pill reminders - even on low-end phones and slow networks.
+
 ---
 
 ## Features
