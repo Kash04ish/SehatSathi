@@ -1,4 +1,4 @@
-DEPLOYED LINK: 
+## DEPLOYED LINK: 
 
 # SehatSathi- Voice‑First AI Health Companion for Elderly Bharat
 Whether you’re in a city or a village, getting medical tests and health advice should be simple, fast, and stress-free.
@@ -40,15 +40,15 @@ For FRONTEND:
 frontend/
 ├── public/             
 ├── src/
-│   ├── assets/          # Images, fonts, etc.
-│   ├── components/      # Reusable UI components
+│   ├── assets/          
+│   ├── components/     
 │   │   └── dashboard/
-│   ├── pages/           # App views (Home, Login, Dashboard, etc.)
-│   ├── App.jsx          # App root component
-│   ├── main.jsx         # Entry point
-├── index.html           # Root HTML template
-├── tailwind.config.js   # Tailwind configuration
-├── vite.config.mjs      # Vite configuration
+│   ├── pages/           
+│   ├── App.jsx          
+│   ├── main.jsx        
+├── index.html          
+├── tailwind.config.js   
+├── vite.config.mjs     
 └── package.json  
 
 ### Prerequisites
