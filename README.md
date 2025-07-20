@@ -1,4 +1,4 @@
-## DEPLOYED LINK: 
+## DEPLOYED LINK: https://sehat-sathi-git-main-himansh1975s-projects.vercel.app
 
 # SehatSathi- Voice‑First AI Health Companion for Elderly Bharat
 
