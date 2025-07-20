@@ -2,15 +2,13 @@
 set -euo pipefail
 
 ###############################################################################
-# 0. Configuration
+# 0. Configuration ─── choose unique, internal ports for the STT sidecar
 ###############################################################################
-# WebSocket port for STT
-export WS_PORT=2700
-# HTTP health-check port for STT (must not collide with $PORT)
-export HTTP_PORT=2701
+export STT_WS_PORT=${STT_WS_PORT:-2700}     # WebSocket for audio → text
+export STT_HTTP_PORT=${STT_HTTP_PORT:-2701} # Tiny HTTP health endpoint
 
 ###############################################################################
-# 1. Download compact Vosk models at runtime
+# 1. Download compact Vosk models at runtime (keeps slug small)
 ###############################################################################
 mkdir -p models
 
@@ -31,18 +29,15 @@ if [ ! -d models/hi-in ]; then
 fi
 
 ###############################################################################
-# 2. Ensure a .env exists so dotenv doesn’t crash
+# 2. Ensure a .env exists so dotenv doesn’t choke
 ###############################################################################
 [ -f .env ] || touch .env
 
 ###############################################################################
-# 3. Launch the two servers
+# 3. Launch the two services
 ###############################################################################
-echo "🚀  Starting Vosk STT WebSocket on :${WS_PORT}"
-python stt_server.py &
-
-echo "🚀  Starting Vosk HTTP health on :${HTTP_PORT}"
-# health‐check is in the same process as stt_server.py, so no extra command
+echo "🚀  Starting Vosk STT WebSocket on :${STT_WS_PORT}"
+python stt_server.py &    # background – shares the same process for health
 
 echo "🚀  Starting Node.js API on :${PORT}"
-exec node server.js
+exec node server.js       # foreground; keeps container alive
