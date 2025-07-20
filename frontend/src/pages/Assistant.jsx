@@ -40,7 +40,13 @@ const Assistant = () => {
     const micSource = audioContext.createMediaStreamSource(stream);
     const worklet = new AudioWorkletNode(audioContext, "pcm-processor");
 
-    const ws = new WebSocket("ws://localhost:2700");
+    // const ws = new WebSocket("ws://localhost:2700");
+    const ws = new WebSocket(
+      process.env.NODE_ENV === 'production'
+        ? "wss://<your-node-backend>.onrender.com/ws/stt"
+        : "ws://localhost:3000/ws/stt"
+    );
+
     ws.binaryType = "arraybuffer";
 
     ws.onopen = () => {
