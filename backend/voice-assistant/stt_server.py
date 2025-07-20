@@ -211,7 +211,7 @@ class HealthHandler(BaseHTTPRequestHandler):
 def start_http_server():
     http_port = 8080 
     server = HTTPServer(("0.0.0.0", http_port), HealthHandler)
-    print("🩺 Healthcheck running on port 8080")
+    print("Healthcheck running on port 8080")
     server.serve_forever()
 
 async def main():
