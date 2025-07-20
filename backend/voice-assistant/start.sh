@@ -1,30 +1,39 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
-# ────────────────────────────────────────────────
-# Download compact Vosk models at runtime
-# en-IN 0.4  ≈ 36 MB   •   hi 0.22  ≈ 42 MB
-# ────────────────────────────────────────────────
+###############################################################################
+# 1. Download compact Vosk models at runtime (≈ 80 MB total, 300 MB RAM)
+###############################################################################
 mkdir -p models
 
-# Indian-English (unchanged: 0.4 is still the newest small model)
+# ── Indian English ───────────────────────────────────────────────────────────
 if [ ! -d models/en-in ]; then
+  echo "⇣  Downloading Vosk en-IN model (0.4)…"
   curl -L -o /tmp/en.zip \
        https://alphacephei.com/vosk/models/vosk-model-small-en-in-0.4.zip
   unzip -q /tmp/en.zip -d models
   mv models/vosk-model-small-en-in-0.4 models/en-in
 fi
 
-# Hindi (newest small model is 0.22 — was 0.4 in the earlier script)
+# ── Hindi ────────────────────────────────────────────────────────────────────
 if [ ! -d models/hi-in ]; then
+  echo "⇣  Downloading Vosk hi model (0.22)…"
   curl -L -o /tmp/hi.zip \
        https://alphacephei.com/vosk/models/vosk-model-small-hi-0.22.zip
   unzip -q /tmp/hi.zip -d models
   mv models/vosk-model-small-hi-0.22 models/hi-in
 fi
 
-# ────────────────────────────────────────────────
-# Launch both servers inside the same Render Web Service
-# ────────────────────────────────────────────────
-python stt_server.py &      # WebSocket STT on ws://localhost:2700
-node   server.js            # Express API on $PORT (set by Render)
+###############################################################################
+# 2. Ensure a .env file exists so dotenv doesn’t throw ENOENT on Render
+###############################################################################
+[ -f .env ] || touch .env
+
+###############################################################################
+# 3. Launch both servers (Render exposes only $PORT; Python runs internally)
+###############################################################################
+echo "🚀  Starting Vosk STT WebSocket on :2700"
+python stt_server.py &
+
+echo "🚀  Starting Node.js API on :${PORT:-3000}"
+exec node server.js
