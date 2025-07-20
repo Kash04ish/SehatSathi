@@ -114,10 +114,7 @@
 # if __name__ == "__main__":
 #     asyncio.run(main())
 #!/usr/bin/env python3
-"""
-stt_server.py – WebSocket wrapper around Vosk for English & Hindi
-"""
-
+#!/usr/bin/env python3
 import asyncio
 import json
 import os
@@ -135,7 +132,6 @@ EXTRA_MODELS: Dict[str, str] = {
     "hi": "./models/hi-in",
     "en": DEFAULT_MODEL_PATH,
 }
-
 SAMPLE_RATE = 16000
 WS_PORT = int(os.getenv("PORT", "2700"))
 
@@ -204,30 +200,30 @@ async def process_audio_stream(ws, recogniser: KaldiRecognizer, first_chunk: byt
     except ConnectionClosedOK:
         pass
 
-# HTTP health check server for Render
+# 🩺 Minimal HTTP server for Render health check
 class HealthHandler(BaseHTTPRequestHandler):
     def do_HEAD(self):
         self.send_response(200)
         self.end_headers()
-
     def do_GET(self):
         self.send_response(200)
         self.end_headers()
-        self.wfile.write(b"STT service is running.")
+        self.wfile.write(b"STT server OK")
 
 def start_http_server():
-    server = HTTPServer(("0.0.0.0", 8080), HealthHandler)
-    print("🩺 HTTP Health check listening on port 8080")
+    http_port = 8080  # Render expects some HTTP route to probe
+    server = HTTPServer(("0.0.0.0", http_port), HealthHandler)
+    print("🩺 Healthcheck running on port 8080")
     server.serve_forever()
 
 async def main():
-    # Run HTTP server in background for health checks
+    # Start HTTP server in background
     threading.Thread(target=start_http_server, daemon=True).start()
 
-    # WebSocket server
+    # Start WebSocket server
     async with websockets.serve(handle_connection, "0.0.0.0", WS_PORT, max_size=None):
-        print(f"🗣️  WebSocket STT server running on ws://0.0.0.0:{WS_PORT}")
-        await asyncio.Future()  # run forever
+        print(f"🗣️ WebSocket STT server running on ws://0.0.0.0:{WS_PORT}")
+        await asyncio.Future()  # Run forever
 
 if __name__ == "__main__":
     asyncio.run(main())
