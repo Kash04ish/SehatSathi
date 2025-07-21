@@ -1,4 +1,4 @@
-## DEPLOYED LINK: https://sehat-sathi-git-main-himansh1975s-projects.vercel.app
+## DEPLOYED LINK: https://sehat-sathi-umber.vercel.app/
 
 # SehatSathi- Voice‑First AI Health Companion for Elderly Bharat
 
@@ -29,7 +29,7 @@ Whether you’re in a city or a village, getting medical tests and health advice
 | TTS (Voice)   | OpenAI Text-to-Speech API                               |
 | Scheduler     | 'node-cron' for time-based pill reminders               |
 | Auth          | Clerk (frontend user management)                        |
-| Deployment    | Vercel (frontend) + Render / Localhost (backend)        |
+| Deployment    | Vercel (frontend) + Railway / Localhost (backend)        |
 
 ---
 
