@@ -131,8 +131,8 @@ EXTRA_MODELS: Dict[str, str] = {
     "en": DEFAULT_MODEL_PATH,
 }
 SAMPLE_RATE = 16000
-WS_PORT = int(os.getenv("PORT", "2700"))
-
+# WS_PORT = int(os.getenv("PORT", "2700"))
+WS_PORT = int(os.getenv("STT_WS_PORT", "2700"))
 # Preload default model
 if not os.path.exists(DEFAULT_MODEL_PATH):
     print(f"Model path not found: {DEFAULT_MODEL_PATH}", file=sys.stderr)
@@ -209,7 +209,8 @@ class HealthHandler(BaseHTTPRequestHandler):
         self.wfile.write(b"STT server OK")
 
 def start_http_server():
-    http_port = 8080 
+    # http_port = 8080 
+    http_port = int(os.getenv("STT_HTTP_PORT", "2701"))
     server = HTTPServer(("0.0.0.0", http_port), HealthHandler)
     print("Healthcheck running on port 8080")
     server.serve_forever()
