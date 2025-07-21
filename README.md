@@ -1,3 +1,5 @@
+## DEPLOYED LINK: https://sehat-sathi-umber.vercel.app/
+
 # SehatSathi- Voice‑First AI Health Companion for Elderly Bharat
 
 Whether you’re in a city or a village, getting medical tests and health advice should be simple, fast, and stress-free.
@@ -27,10 +29,9 @@ Whether you’re in a city or a village, getting medical tests and health advice
 | TTS (Voice)   | OpenAI Text-to-Speech API                               |
 | Scheduler     | 'node-cron' for time-based pill reminders               |
 | Auth          | Clerk (frontend user management)                        |
-| Deployment    | Vercel (frontend) + Render / Localhost (backend)        |
+| Deployment    | Vercel (frontend) + Railway / Localhost (backend)       |
 
 ---
-
 
 # Run Locally
 
@@ -116,7 +117,8 @@ python/         Vosk STT service
 
 ---
 
-## Additional Feature Implemented not in this repo but tested: Local Events(Ticketmaster Integration) & Website Translate(LibreTranslate)
+## Additional Feature Implemented not in this repo but tested: Local Events(Ticketmaster Integration) & Website Translate(LibreTranslate) [Not included in main repo as mentor said to just test it locally using docker as APIs weren’t free and docker needs to be on for all the time to keep site working during development and testing]
+
 To self-host LibreTranslate API using Docker.
 LibreTranslate is a free and open-source machine translation API. Hosting it locally or on your server lets you avoid rate limits and external API costs.
 
