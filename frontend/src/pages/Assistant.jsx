@@ -4,6 +4,7 @@ import { FiMic, FiSend, FiAlertCircle } from "react-icons/fi";
 import { BsCapsule, BsPhone, BsFlower1, BsPlusCircle } from "react-icons/bs";
 import { FaRegClock, FaBed, FaUtensils } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import.meta.env.VITE_API_URL
 
 const Assistant = () => {
   //for navigation
@@ -40,7 +41,9 @@ const Assistant = () => {
     const micSource = audioContext.createMediaStreamSource(stream);
     const worklet = new AudioWorkletNode(audioContext, "pcm-processor");
 
-    const ws = new WebSocket("ws://localhost:2700");
+    // const ws = new WebSocket("ws://localhost:2700");
+    const ws = new WebSocket(`${import.meta.env.VITE_API_URL.replace(/^http/, 'ws')}/ws/stt`);
+
     // const ws = new WebSocket(
     //   process.env.NODE_ENV === 'production'
     //     ? "wss://<your-node-backend>.onrender.com/ws/stt"
@@ -64,24 +67,57 @@ const Assistant = () => {
     };
 
     ws.onmessage = (event) => {
-      const { text, final } = JSON.parse(event.data);
+  let jsonString;
+  if (event.data instanceof ArrayBuffer) {
+    const decoder = new TextDecoder('utf-8');
+    jsonString = decoder.decode(event.data);
+  } else {
+    jsonString = event.data;
+  }
 
-      console.log("STT raw:", text); 
-     
-        const isRoman = /^[a-zA-Z\s]+$/.test(text);
+  try {
+    const { text, final } = JSON.parse(jsonString);
+
+    console.log("STT raw:", text); 
+
+     const isRoman = /^[a-zA-Z\s]+$/.test(text);
         const output = sttLang === 'hi'
           ? (isRoman ? Sanscript.t(text, 'itrans', 'devanagari') : text)
           : text;  
 
-      console.log("STT converted:", output); 
+    console.log("STT converted:", output);
 
-      if (!final) setPartial(output);
-      else {
-        setPartial('');
-        stopRecording();
-        sendToChat(output);
-      }
-    };
+    if (!final) {
+      setPartial(output);
+    } else {
+      setPartial('');
+      stopRecording();
+      sendToChat(output);
+    }
+  } catch (err) {
+    console.error("Failed to parse WebSocket message:", err, jsonString);
+  }
+};
+
+    // ws.onmessage = (event) => {
+    //   const { text, final } = JSON.parse(event.data);
+
+    //   console.log("STT raw:", text); 
+     
+    //     const isRoman = /^[a-zA-Z\s]+$/.test(text);
+    //     const output = sttLang === 'hi'
+    //       ? (isRoman ? Sanscript.t(text, 'itrans', 'devanagari') : text)
+    //       : text;  
+
+    //   console.log("STT converted:", output); 
+
+    //   if (!final) setPartial(output);
+    //   else {
+    //     setPartial('');
+    //     stopRecording();
+    //     sendToChat(output);
+    //   }
+    // };
   };
 
   const stopRecording = () => {
@@ -101,7 +137,7 @@ const Assistant = () => {
     setMessages(prev => [...prev, { from: "user", text }]);
     setInputText("");
     try {
-      const res = await fetch("http://localhost:8080/chat", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text })
@@ -118,7 +154,7 @@ const Assistant = () => {
 
   const playTTS = async (text, lang = "en") => {
     try {
-      const res = await fetch("http://localhost:8080/tts", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/tts`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         // body: JSON.stringify({ text })

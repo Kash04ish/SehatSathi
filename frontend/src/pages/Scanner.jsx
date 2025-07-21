@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import scannerGuideImage from "../assets/scanner-guide.png";
 import guide2 from "../assets/guide2.png";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Scanner = () => {
   useEffect(() => {
@@ -23,11 +24,11 @@ const Scanner = () => {
 
   //connect to backend server - used id
   useEffect(() => {
-    axios.get("http://localhost:8080/api/med-info/recent")
+    axios.get(`${API_URL}/api/med-info/recent`)
       .then(res => setRecentIds(res.data.meds || []))
       .catch(err => console.error("Failed to fetch recent scans:", err));
 
-    axios.get("http://localhost:8080/api/reminders/all", { params: { userId } })
+    axios.get(`${API_URL}/api/reminders/all`, { params: { userId } })
       .then(res => {
         const patched = (res.data.reminders || []).map(r => {
           const hour = new Date(r.due).getHours();
@@ -50,7 +51,7 @@ const Scanner = () => {
     formData.append("userId", userId);
 
     try {
-      const { data } = await axios.post("http://localhost:8080/api/med-info/analyze", formData, {
+      const { data } = await axios.post(`${API_URL}/api/med-info/analyze`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -64,7 +65,7 @@ const Scanner = () => {
 
   const fetchById = async (id) => {
     try {
-      const { data } = await axios.get(`http://localhost:8080/api/med-info/${id}`);
+      const { data } = await axios.get(`${API_URL}/api/med-info/${id}`);
       const med = Array.isArray(data.medicine) ? data.medicine[0] : data.medicine;
 
       setOcrResult(`Medicine: ${med.name}`);
@@ -89,7 +90,7 @@ const Scanner = () => {
     formData.append("userId", userId);
 
     try {
-      const res = await axios.post("http://localhost:8080/api/prescription/analyze", formData, {
+      const res = await axios.post(`${API_URL}/api/prescription/analyze`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -103,7 +104,7 @@ const Scanner = () => {
 
   const acknowledgeReminder = async (id) => {
     try {
-      await axios.post(`http://localhost:8080/api/reminders/${id}/ack`);
+      await axios.post(`${API_URL}/api/reminders/${id}/ack`);
       setAllReminders((prev) => prev.filter((r) => r._id !== id));
     } catch (err) {
       console.error("Acknowledge failed:", err);
