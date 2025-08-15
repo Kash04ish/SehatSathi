@@ -4,7 +4,7 @@ import { FiMic, FiSend, FiAlertCircle } from "react-icons/fi";
 import { BsCapsule, BsPhone, BsFlower1, BsPlusCircle } from "react-icons/bs";
 import { FaRegClock, FaBed, FaUtensils } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import.meta.env.VITE_API_URL
+import.meta.env.VITE_API_URL;
 
 const Assistant = () => {
   //for navigation
